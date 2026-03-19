@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>“原神”js逆向 | Tubby Little Hero</title><meta name="author" content="Tubby Little Hero"><meta name="copyright" content="Tubby Little Hero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="js逆向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“原神”js逆向">
+<meta property="og:url" content="https://tubby-little-hero.github.io/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/index.html">
+<meta property="og:site_name" content="Tubby Little Hero">
+<meta property="og:description" content="js逆向">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tubby-little-hero.github.io/img/weierlite.png">
+<meta property="article:published_time" content="2026-02-22T08:18:55.000Z">
+<meta property="article:modified_time" content="2026-03-19T10:57:26.071Z">
+<meta property="article:author" content="Tubby Little Hero">
+<meta property="article:tag" content="实战">
+<meta property="article:tag" content="js逆向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tubby-little-hero.github.io/img/weierlite.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "“原神”js逆向",
+  "url": "https://tubby-little-hero.github.io/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/",
+  "image": "https://tubby-little-hero.github.io/img/weierlite.png",
+  "datePublished": "2026-02-22T08:18:55.000Z",
+  "dateModified": "2026-03-19T10:57:26.071Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Tubby Little Hero",
+      "url": "https://tubby-little-hero.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tubby-little-hero.github.io/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '“原神”js逆向',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/leisai.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/mao.png" alt="Logo"><span class="site-name">Tubby Little Hero</span></a><a class="nav-page-title" href="/"><span class="site-name">“原神”js逆向</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">“原神”js逆向</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-22T08:18:55.000Z" title="发表于 2026-02-22 16:18:55">2026-02-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-19T10:57:26.071Z" title="更新于 2026-03-19 18:57:26">2026-03-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/js%E9%80%86%E5%90%91-%E7%BD%91%E5%AE%89/">js逆向 网安</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>原神启动！</p>
+<h1 id="这是官网"><a href="#这是官网" class="headerlink" title="这是官网"></a>这是官网</h1><p><a target="_blank" rel="noopener" href="https://ys.mihoyo.com/main/">https://ys.mihoyo.com/main/</a></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDk0ZDc1YzU0ZDQyMmZiYmM0YmUwOWQ1MTA0ZWE2ZDFfQmxCcTg0aWh4Z1hneVFBc0hhYXY5S3dsY1FEQ2lqNGVfVG9rZW46TzN0cWJUVG9Ib3FpcjR4elhRU2N6UE5LbnhoXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="搜一下"><a href="#搜一下" class="headerlink" title="搜一下"></a>搜一下</h1><p>f12 全局搜索一下<code>encrypt</code>这个关键词</p>
+<p>发现</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MTE0MDVkZjBkNTdmM2I5OTIwMmZjYjI0NWM0YjMxMDdfZm1VSHhmOTgwaTl0VmdORnR3N29zR0lCS1U4YzZRdHVfVG9rZW46VHY2cGJTekV6b2JXdTh4eUo4MGN6MWExbkliXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<p>这个文件很可疑</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=M2Y2MDljZGMzZGM4YTdjZTZjMTA3NWUxZTJmY2Q0YjFfa1hvbVozMlM3UG52eVdac3NMRXJlbVR4SWZQYlpzaW9fVG9rZW46U2k2dmJJNVJKb2RDR2l4cUxJNWNtZ2RwbnFoXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="找一下"><a href="#找一下" class="headerlink" title="找一下"></a>找一下</h1><p>在这个文件里面找到了两个和登录传参的参数一样的两个地方</p>
+<p>应该就是这里， 双击!</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTVjZjE3OWI3ZGM0Y2Y3NjNjMTUyNzAyYzAwZWNlYTBfWnJUelFXQ1BkcHVBMGN1S0xEMHVRRkhSdmNxUklKcjdfVG9rZW46Wm95YmIwZlYyb3RYWEN4SVNpcmNtTzNsbnVnXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="断一下"><a href="#断一下" class="headerlink" title="断一下"></a>断一下</h1><p>在这里截断 尝试登录发现停下来了</p>
+<p>说明就是这里</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=NWIxNWI1MDUwZjFmZTAxMDExYThmZDhhZDJlMzVkOWFfdFhTSEh4MGNvdFZLUURFb3Z6SmhNbDFrdzNJVmtZRTVfVG9rZW46RkIxdGJkWjJYb0JJMWh4UWlCcWNHWGw1bkhjXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="追一下"><a href="#追一下" class="headerlink" title="追一下"></a>追一下</h1><p>继续追进调用的函数</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=YTRmYTVhZTZkNzZkOWQ4M2E3ZGI4ODk4ZWJlMjM0MGNfNGs5RjN4eXVWSnR6MDU4Rk11dDNVbVJSOFh2MTdGeFBfVG9rZW46VDVpQmIyOTFXb0lETTd4QkxVQ2N3TmV6bkRnXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="再断一下"><a href="#再断一下" class="headerlink" title="再断一下"></a>再断一下</h1><p>Try 函数 ez！</p>
+<p>到这里发现了 e 和 n 应该是 RSA 加密</p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=ZmNmMzQzOTM1Mzk2MDM0Y2Q3MjYyM2M2ZDVkNTQ2MmJfMTNyU0ZKZVVUVkZqam00MjBMaU1reWpoR3Q4UVVnZnFfVG9rZW46TFludGJMTVQ0b05YOUx4c2hWZGMySDBCbkJlXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<h1 id="还可以拿到值"><a href="#还可以拿到值" class="headerlink" title="还可以拿到值"></a>还可以拿到值</h1><p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=MGM5ODcxZDJjOThlY2M3NjY5OWQ0N2Y1OGQ0YWFkMzZfVU9KaWF0YWQ4WFVJbnU2YjBuZWdrUlZQdHZyUVhja1JfVG9rZW46S0Nla2IzUWFwb2h4aVF4REdObGNobTd2bmVkXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+<p>RSA 加密的核心是<strong>公钥</strong><strong>（n, e）</strong> 和<strong>私钥</strong><strong>（n, d）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义（JS 逆向中常见叫法）</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>n</td>
+<td>模数（Modulus）</td>
+<td>RSA 的核心大整数，公钥 &#x2F; 私钥都依赖它，通常是几百位的十进制大数</td>
+</tr>
+<tr>
+<td>t（0-36）</td>
+<td>大概率是n的分段拆分值</td>
+<td>前端为了传输 &#x2F; 处理方便，会把超大的n拆成多个小段存储（比如按位数 &#x2F; 长度拆分）</td>
+</tr>
+<tr>
+<td>s:0</td>
+<td>状态位（成功标识）</td>
+<td>表示参数生成 &#x2F; 拆分成功</td>
+</tr>
+<tr>
+<td>t:37</td>
+<td>分段总数</td>
+<td>说明n被拆成了 37 段（0-36）</td>
+</tr>
+</tbody></table>
+<p>这里的 n 被拆分了</p>
+<h1 id="转为十六进制还原加密逻辑"><a href="#转为十六进制还原加密逻辑" class="headerlink" title="转为十六进制还原加密逻辑"></a>转为十六进制还原加密逻辑</h1><p>还原<code>n</code> + 转十六进制</p>
+<p><code>在控制台使用 this.n.toString(16)</code>和<code>this.e.toString(16)</code>，就是把 RSA 的<code>n</code>（模数）和<code>e</code>（公钥指数）从<strong>十进制数转为十六进制字符串</strong></p>
+<p><img src="https://pcnm3h7ebxgf.feishu.cn/space/api/box/stream/download/asynccode/?code=N2UyZTQwZjJmYzg1OGE4ZWM3Yzg4MzgwNDEzNzk4NjVfN2JNTGVGUWRHTFdSV0FtelhPcVp1em9KYjB0NGdoeDZfVG9rZW46TzNPdmJnRmlHb2xzNFV4MWN5bWNUYmhvbmdlXzE3NzM5MTc3OTg6MTc3MzkyMTM5OF9WNA" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io">Tubby Little Hero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/">https://tubby-little-hero.github.io/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://tubby-little-hero.github.io" target="_blank">Tubby Little Hero</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%9E%E6%88%98/">实战</a><a class="post-meta__tags" href="/tags/js%E9%80%86%E5%90%91/">js逆向</a></div><div class="post-share"><div class="social-share" data-image="/img/weierlite.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/02/21/%E2%80%9C%E9%95%BF%E5%AE%89%E5%A4%A7%E5%AD%A6js%E9%80%86%E5%90%91%E2%80%9D/" title="“长安大学”js逆向"><img class="cover" src="/img/lingboli.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">“长安大学”js逆向</div></div><div class="info-2"><div class="info-item-1">js逆向</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/21/%E2%80%9C%E6%88%90%E9%83%BD%E5%A4%A7%E5%AD%A6%E2%80%9Djs%E9%80%86%E5%90%91/" title="“成都大学”js逆向"><img class="cover" src="/img/shuai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">“成都大学”js逆向</div></div><div class="info-2"><div class="info-item-1">js逆向</div></div></div></a><a class="pagination-related" href="/2026/02/21/%E2%80%9C%E9%95%BF%E5%AE%89%E5%A4%A7%E5%AD%A6js%E9%80%86%E5%90%91%E2%80%9D/" title="“长安大学”js逆向"><img class="cover" src="/img/lingboli.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">“长安大学”js逆向</div></div><div class="info-2"><div class="info-item-1">js逆向</div></div></div></a><a class="pagination-related" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞"><img class="cover" src="/img/lingboli.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">xss一些实战漏洞</div></div><div class="info-2"><div class="info-item-1">xss漏洞</div></div></div></a><a class="pagination-related" href="/2026/01/22/1.22%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F%E6%8A%A5%E5%91%8A/" title="1.22靶场渗透报告"><img class="cover" src="/img/leisai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-22</div><div class="info-item-2">1.22靶场渗透报告</div></div><div class="info-2"><div class="info-item-1">靶场渗透</div></div></div></a><a class="pagination-related" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透"><img class="cover" src="/img/shuai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">CTF4靶机渗透</div></div><div class="info-2"><div class="info-item-1">靶机渗透</div></div></div></a><a class="pagination-related" href="/2026/01/14/CTF6/" title="CTF6渗透测试"><img class="cover" src="/img/2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-14</div><div class="info-item-2">CTF6渗透测试</div></div><div class="info-2"><div class="info-item-1">靶场渗透</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Tubby Little Hero</div><div class="author-info-description">芜湖</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的私人学习笔记（偶尔娱乐）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E6%98%AF%E5%AE%98%E7%BD%91"><span class="toc-number">1.</span> <span class="toc-text">这是官网</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E4%B8%80%E4%B8%8B"><span class="toc-number">2.</span> <span class="toc-text">搜一下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%BE%E4%B8%80%E4%B8%8B"><span class="toc-number">3.</span> <span class="toc-text">找一下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%AD%E4%B8%80%E4%B8%8B"><span class="toc-number">4.</span> <span class="toc-text">断一下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%BD%E4%B8%80%E4%B8%8B"><span class="toc-number">5.</span> <span class="toc-text">追一下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%8D%E6%96%AD%E4%B8%80%E4%B8%8B"><span class="toc-number">6.</span> <span class="toc-text">再断一下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%98%E5%8F%AF%E4%BB%A5%E6%8B%BF%E5%88%B0%E5%80%BC"><span class="toc-number">7.</span> <span class="toc-text">还可以拿到值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AC%E4%B8%BA%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BF%98%E5%8E%9F%E5%8A%A0%E5%AF%86%E9%80%BB%E8%BE%91"><span class="toc-number">8.</span> <span class="toc-text">转为十六进制还原加密逻辑</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/" title="“原神”js逆向"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="“原神”js逆向"/></a><div class="content"><a class="title" href="/2026/02/22/%E2%80%9C%E5%8E%9F%E7%A5%9E%E2%80%9Djs%E9%80%86%E5%90%91/" title="“原神”js逆向">“原神”js逆向</a><time datetime="2026-02-22T08:18:55.000Z" title="发表于 2026-02-22 16:18:55">2026-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞"><img src="/img/lingboli.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="xss一些实战漏洞"/></a><div class="content"><a class="title" href="/2026/02/21/xss%E4%B8%80%E4%BA%9B%E5%AE%9E%E6%88%98%E6%BC%8F%E6%B4%9E/" title="xss一些实战漏洞">xss一些实战漏洞</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透"><img src="/img/shuai.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTF4靶机渗透"/></a><div class="content"><a class="title" href="/2026/02/21/CTF4%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="CTF4靶机渗透">CTF4靶机渗透</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="Hackademic.PTR1靶机渗透"><img src="/img/dao.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hackademic.PTR1靶机渗透"/></a><div class="content"><a class="title" href="/2026/02/21/Hackademic.PTR1%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/" title="Hackademic.PTR1靶机渗透">Hackademic.PTR1靶机渗透</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CTF5靶机渗透测试"/></a><div class="content"><a class="title" href="/2026/02/21/CTF5%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="CTF5靶机渗透测试">CTF5靶机渗透测试</a><time datetime="2026-02-21T08:18:55.000Z" title="发表于 2026-02-21 16:18:55">2026-02-21</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 - 2026 By Tubby Little Hero</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
